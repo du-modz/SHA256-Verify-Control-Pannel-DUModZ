@@ -5,232 +5,219 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>DUModZ Admin Pro</title>
     
-    <!-- Scripts & Styles -->
+    <!-- Libraries -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 
     <style>
         :root {
-            --bg: #F2F5F9;
+            --bg: #F0F3F7;
             --surface: #FFFFFF;
-            --primary: #3366FF;
-            --accent: #FF3366;
-            --text: #1A1C1E;
-            --shadow: rgba(50, 50, 93, 0.1);
+            --primary: #2D5BFF;
+            --text: #1E293B;
+            --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
         }
 
         .dark-mode {
-            --bg: #0B0E14;
-            --surface: #171C26;
-            --primary: #4D7BFF;
-            --accent: #FF4D7D;
-            --text: #E3E3E3;
-            --shadow: rgba(0, 0, 0, 0.4);
+            --bg: #0F172A;
+            --surface: #1E293B;
+            --primary: #60A5FA;
+            --text: #F1F5F9;
+            --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
         }
 
         body {
             font-family: 'Outfit', sans-serif;
             background-color: var(--bg);
             color: var(--text);
-            transition: background 0.4s ease;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* Glassmorphism & Neumorphism Combined */
-        .glass-card {
-            background: var(--surface);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 10px 30px var(--shadow);
-            border-radius: 30px;
-        }
-
-        .app-input {
-            background: var(--bg);
-            border: 1.5px solid transparent;
-            border-radius: 20px;
-            padding: 16px;
-            transition: 0.3s;
-            outline: none;
-        }
-
-        .app-input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 15px rgba(51, 102, 255, 0.2);
-        }
-
-        .action-btn {
-            background: var(--primary);
-            color: white;
-            padding: 16px;
-            border-radius: 22px;
-            font-weight: 700;
-            box-shadow: 0 8px 20px rgba(51, 102, 255, 0.3);
-            transition: 0.3s;
-        }
-
-        .action-btn:active { transform: scale(0.95); opacity: 0.9; }
-
-        /* Splash Screen Animation */
-        #splash {
+        /* Splash Overlay */
+        #splash-screen {
             position: fixed;
             inset: 0;
-            background: var(--bg);
             z-index: 9999;
+            background: var(--bg);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
         }
 
-        /* Responsive Container */
-        .mobile-frame {
-            max-width: 768px;
-            margin: 0 auto;
-            min-height: 100vh;
-            position: relative;
+        .glass-card {
+            background: var(--surface);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: var(--card-shadow);
+            border-radius: 28px;
+        }
+
+        .app-input {
+            background: var(--bg);
+            border: 2px solid transparent;
+            border-radius: 18px;
+            padding: 14px 18px;
+            width: 100%;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .app-input:focus { border-color: var(--primary); }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            padding: 16px;
+            border-radius: 18px;
+            font-weight: 700;
+            box-shadow: 0 10px 15px -3px rgba(45, 91, 255, 0.3);
+            transition: 0.3s;
+        }
+
+        .btn-primary:active { transform: scale(0.95); }
+
+        .sha-badge {
+            background: rgba(45, 91, 255, 0.1);
+            color: var(--primary);
+            font-family: monospace;
+            font-size: 11px;
+            padding: 8px;
+            border-radius: 12px;
+            word-break: break-all;
         }
 
         .bottom-nav {
             position: fixed;
-            bottom: 24px;
+            bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
             width: 90%;
             max-width: 450px;
-            background: var(--surface);
-            backdrop-filter: blur(15px);
-            border-radius: 25px;
-            padding: 12px;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            box-shadow: 0 15px 35px var(--shadow);
             z-index: 100;
         }
 
-        .sha-box {
-            background: rgba(51, 102, 255, 0.05);
-            border-radius: 15px;
-            padding: 10px;
-            font-family: 'Monaco', monospace;
-            font-size: 10px;
-            word-break: break-all;
-            border: 1px dashed var(--primary);
-        }
+        /* Animations */
+        .fade-in { opacity: 0; transform: translateY(20px); }
 
-        /* Custom Scroll */
-        ::-webkit-scrollbar { width: 0px; }
-
-        .hidden-content { display: none; opacity: 0; }
+        /* Mobile specific scroll */
+        ::-webkit-scrollbar { width: 0; }
     </style>
 </head>
-<body>
+<body class="min-h-screen">
 
     <!-- Splash Screen -->
-    <div id="splash">
-        <img src="https://raw.githubusercontent.com/du-modz/File-Blogger-Website-DUModZ/refs/heads/main/Img/dumod-logo.webp" class="w-24 h-24 rounded-3xl animate-pulse shadow-2xl mb-4" alt="DUModZ">
-        <div class="h-1 w-32 bg-gray-200 rounded-full overflow-hidden">
-            <div id="progress" class="h-full bg-blue-600 w-0 transition-all duration-1000"></div>
+    <div id="splash-screen">
+        <img src="https://raw.githubusercontent.com/du-modz/File-Blogger-Website-DUModZ/refs/heads/main/Img/dumod-logo.webp" 
+             class="w-24 h-24 rounded-[30px] shadow-2xl mb-6 animate-pulse">
+        <div class="w-48 h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+            <div id="loading-bar" class="h-full bg-blue-500 w-0 transition-all duration-700"></div>
         </div>
-        <p class="mt-4 text-sm font-bold opacity-50 tracking-widest uppercase">System Verifying...</p>
+        <p class="mt-4 text-[10px] font-bold uppercase tracking-[0.3em] opacity-40">System Verifying...</p>
     </div>
 
-    <div class="mobile-frame px-4 pb-32">
-
-        <!-- Login Section -->
-        <div id="login-section" class="hidden-content flex flex-col items-center justify-center min-h-screen">
-            <div class="glass-card p-10 w-full text-center">
-                <img src="https://raw.githubusercontent.com/du-modz/File-Blogger-Website-DUModZ/refs/heads/main/Img/dumod-logo.webp" class="w-20 h-20 mx-auto rounded-2xl mb-6 shadow-xl">
-                <h1 class="text-3xl font-extrabold mb-2">DUModZ Admin</h1>
-                <p class="text-sm opacity-50 mb-8">Enter credentials to manage database</p>
-                
-                <div class="space-y-4 text-left">
-                    <div>
-                        <label class="text-xs font-bold ml-2 opacity-60">Admin Email</label>
-                        <input list="admin-emails" id="email" class="app-input w-full mt-1" placeholder="Email Address">
-                        <datalist id="admin-emails">
-                            <option value="dumodz.info@gmail.com">
-                        </datalist>
-                    </div>
-                    <div>
-                        <label class="text-xs font-bold ml-2 opacity-60">Master Password</label>
-                        <input type="password" id="password" class="app-input w-full mt-1" placeholder="••••••••">
-                    </div>
-                    <button onclick="loginUser()" class="action-btn w-full mt-4">Access Dashboard</button>
+    <!-- Login UI -->
+    <div id="login-ui" class="hidden min-h-screen flex items-center justify-center p-6">
+        <div class="glass-card p-10 w-full max-w-[400px] text-center">
+            <img src="https://raw.githubusercontent.com/du-modz/File-Blogger-Website-DUModZ/refs/heads/main/Img/dumod-logo.webp" 
+                 class="w-20 h-20 mx-auto rounded-2xl mb-6 shadow-xl">
+            <h1 class="text-3xl font-extrabold mb-1">Welcome</h1>
+            <p class="text-sm opacity-50 mb-8">Admin Access Required</p>
+            
+            <div class="space-y-4 text-left">
+                <div class="group">
+                    <label class="text-[11px] font-bold ml-3 mb-1 block opacity-60">ADMIN EMAIL</label>
+                    <input list="emails" id="login-email" class="app-input" placeholder="Select or enter email">
+                    <datalist id="emails">
+                        <option value="dumodz.info@gmail.com">
+                    </datalist>
                 </div>
-            </div>
-        </div>
-
-        <!-- Dashboard Section -->
-        <div id="dashboard-section" class="hidden-content pt-8">
-            <!-- Header -->
-            <div class="flex justify-between items-center mb-10">
-                <div class="flex items-center gap-3">
-                    <img src="https://raw.githubusercontent.com/du-modz/File-Blogger-Website-DUModZ/refs/heads/main/Img/dumod-logo.webp" class="w-12 h-12 rounded-xl shadow-lg border-2 border-white/20">
-                    <div>
-                        <h2 id="admin-label-text" class="text-xl font-black">DUModZ Pro</h2>
-                        <div class="flex items-center gap-1">
-                            <span class="w-2 h-2 bg-green-500 rounded-full animate-ping"></span>
-                            <span class="text-[10px] uppercase font-bold opacity-50">Active Sync</span>
-                        </div>
-                    </div>
+                <div>
+                    <label class="text-[11px] font-bold ml-3 mb-1 block opacity-60">PASSWORD</label>
+                    <input type="password" id="login-pass" class="app-input" placeholder="••••••••">
                 </div>
-                <div class="flex gap-3">
-                    <button onclick="toggleMode()" class="w-10 h-10 glass-card flex items-center justify-center text-lg"><i class="fas fa-circle-half-stroke"></i></button>
-                    <button onclick="logoutUser()" class="w-10 h-10 glass-card flex items-center justify-center text-red-500"><i class="fas fa-sign-out-alt"></i></button>
-                </div>
-            </div>
-
-            <!-- Global Settings Bento Box -->
-            <div class="glass-card p-6 mb-8">
-                <h3 class="font-black text-lg mb-6 flex items-center gap-2"><i class="fas fa-sliders text-blue-500"></i> Global Config</h3>
-                <div class="grid gap-4">
-                    <div class="app-input flex flex-col">
-                        <span class="text-[9px] font-bold opacity-40">ADMIN LABEL</span>
-                        <input id="admin-title-input" class="bg-transparent font-bold outline-none">
-                    </div>
-                    <div class="app-input flex flex-col">
-                        <span class="text-[9px] font-bold opacity-40">CONTACT URL</span>
-                        <input id="contact-url" class="bg-transparent font-bold outline-none text-blue-500">
-                    </div>
-                    <div class="app-input flex flex-col">
-                        <span class="text-[9px] font-bold opacity-40">GLOBAL BLOCKLIST</span>
-                        <textarea id="global-blocklist" class="bg-transparent font-bold outline-none h-20 resize-none"></textarea>
-                    </div>
-                    <button onclick="saveGlobal()" class="action-btn py-3 bg-green-600 shadow-green-500/20">Update Database</button>
-                </div>
-            </div>
-
-            <!-- Apps Header -->
-            <div class="flex justify-between items-end mb-6">
-                <h3 class="text-2xl font-black">Authorized<br>Applications</h3>
-                <button onclick="openAppDialog()" class="px-4 py-2 bg-blue-600 text-white rounded-xl text-xs font-bold shadow-lg">New App</button>
-            </div>
-
-            <!-- App List Container -->
-            <div id="app-list" class="space-y-6">
-                <!-- App Cards -->
+                <button onclick="handleLogin()" class="btn-primary w-full mt-4">Login Securely</button>
             </div>
         </div>
     </div>
 
-    <!-- Bottom Navigation -->
-    <nav id="nav-bar" class="bottom-nav hidden-content">
-        <button class="w-12 h-12 flex items-center justify-center text-blue-500 text-xl"><i class="fas fa-grid-2"></i></button>
-        <button onclick="openAppDialog()" class="w-16 h-16 bg-blue-600 text-white rounded-3xl shadow-xl flex items-center justify-center text-2xl -translate-y-6 border-8 border-[var(--bg)]"><i class="fas fa-plus"></i></button>
-        <button onclick="window.scrollTo({top:0, behavior:'smooth'})" class="w-12 h-12 flex items-center justify-center text-gray-400 text-xl"><i class="fas fa-chevron-up"></i></button>
-    </nav>
+    <!-- Dashboard UI -->
+    <div id="dashboard-ui" class="hidden pb-40">
+        <!-- Sticky Header -->
+        <header class="sticky top-0 z-50 p-6 flex justify-between items-center backdrop-blur-xl bg-[var(--bg)]/80">
+            <div class="flex items-center gap-3">
+                <img src="https://raw.githubusercontent.com/du-modz/File-Blogger-Website-DUModZ/refs/heads/main/Img/dumod-logo.webp" 
+                     class="w-12 h-12 rounded-xl shadow-lg border-2 border-white/20">
+                <div>
+                    <h2 id="display-admin-label" class="text-xl font-extrabold leading-none">DUModZ Pro</h2>
+                    <span class="text-[9px] font-bold text-green-500 uppercase tracking-widest">Server Live</span>
+                </div>
+            </div>
+            <div class="flex gap-3">
+                <button onclick="toggleTheme()" class="w-11 h-11 glass-card flex items-center justify-center text-lg"><i class="fas fa-moon" id="theme-icon"></i></button>
+                <button onclick="handleLogout()" class="w-11 h-11 glass-card flex items-center justify-center text-red-500"><i class="fas fa-power-off"></i></button>
+            </div>
+        </header>
 
-    <!-- Firebase SDK Logic -->
+        <main class="max-w-[768px] mx-auto px-6 mt-4">
+            <!-- Global Config Card -->
+            <div class="glass-card p-8 mb-10 fade-in">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-10 h-10 bg-blue-500/10 rounded-xl flex items-center justify-center text-blue-500"><i class="fas fa-cog"></i></div>
+                    <h2 class="text-xl font-bold">System Configuration</h2>
+                </div>
+                <div class="space-y-4">
+                    <div class="app-input flex flex-col">
+                        <span class="text-[9px] font-bold opacity-40 mb-1">ADMIN LABEL</span>
+                        <input id="input-label" class="bg-transparent font-bold outline-none">
+                    </div>
+                    <div class="app-input flex flex-col">
+                        <span class="text-[9px] font-bold opacity-40 mb-1">CONTACT URL</span>
+                        <input id="input-url" class="bg-transparent font-bold outline-none text-blue-500">
+                    </div>
+                    <div class="app-input flex flex-col">
+                        <span class="text-[9px] font-bold opacity-40 mb-1">GLOBAL BLOCKLIST</span>
+                        <textarea id="input-blocklist" class="bg-transparent font-bold outline-none h-20 resize-none"></textarea>
+                    </div>
+                    <button onclick="updateGlobal()" class="btn-primary w-full py-4 text-sm uppercase tracking-widest">Save System Config</button>
+                </div>
+            </div>
+
+            <!-- List Section -->
+            <div class="flex justify-between items-center mb-6 px-2">
+                <h3 class="text-2xl font-black">Authorized Apps</h3>
+                <button onclick="openAppModal()" class="px-5 py-2.5 bg-blue-500 text-white rounded-xl text-xs font-bold shadow-lg shadow-blue-500/30">
+                    <i class="fas fa-plus mr-1"></i> ADD NEW
+                </button>
+            </div>
+
+            <div id="app-container" class="space-y-6">
+                <!-- Cards will load here -->
+            </div>
+        </main>
+
+        <!-- Floating Nav -->
+        <div class="bottom-nav">
+            <div class="glass-card p-3 flex justify-around items-center backdrop-blur-2xl">
+                <button class="w-14 h-14 rounded-2xl text-blue-500 bg-blue-500/10 flex items-center justify-center text-xl"><i class="fas fa-house"></i></button>
+                <button onclick="openAppModal()" class="w-16 h-16 bg-blue-500 text-white rounded-3xl shadow-xl flex items-center justify-center text-2xl -translate-y-8 border-[6px] border-[var(--bg)] transition-all active:scale-90">
+                    <i class="fas fa-plus"></i>
+                </button>
+                <button onclick="window.scrollTo({top:0, behavior:'smooth'})" class="w-14 h-14 flex items-center justify-center text-gray-400 text-xl"><i class="fas fa-arrow-up"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getDatabase, ref, onValue, set, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+        import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
+        // Your Config
         const firebaseConfig = {
             apiKey: "AIzaSyC_DtbizYw47RMwx6QG-CSTPdpEgmIQ7wM",
             authDomain: "sha257-varify-dumodz.firebaseapp.com",
@@ -244,85 +231,88 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
         const auth = getAuth(app);
-        const DB_PATH = "verify-sha256-data-dumodz";
+        const PATH = "verify-sha256-data-dumodz";
+        let store = null;
 
-        let currentData = null;
-
-        // Splash Progress
-        setTimeout(() => {
-            document.getElementById('progress').style.width = '100%';
-        }, 100);
-
-        // Persistent Auth State
-        onAuthStateChanged(auth, user => {
+        // UI Controller
+        const hideSplash = () => {
+            document.getElementById('loading-bar').style.width = '100%';
             setTimeout(() => {
-                gsap.to("#splash", { opacity: 0, duration: 0.5, onComplete: () => {
-                    document.getElementById('splash').style.display = 'none';
-                    if (user) showDashboard();
-                    else showLogin();
-                }});
-            }, 1500);
+                gsap.to("#splash-screen", { opacity: 0, pointerEvents: 'none', duration: 0.5 });
+            }, 500);
+        };
+
+        const showUI = (type) => {
+            document.getElementById('login-ui').classList.add('hidden');
+            document.getElementById('dashboard-ui').classList.add('hidden');
+            if(type === 'login') document.getElementById('login-ui').classList.remove('hidden');
+            if(type === 'dashboard') {
+                document.getElementById('dashboard-ui').classList.remove('hidden');
+                gsap.to(".fade-in", { opacity: 1, y: 0, stagger: 0.1, duration: 0.8 });
+            }
+        };
+
+        // Auth Listener (Persistent)
+        onAuthStateChanged(auth, user => {
+            if (user) {
+                loadRealtimeData();
+                showUI('dashboard');
+            } else {
+                showUI('login');
+            }
+            hideSplash();
         });
 
-        window.loginUser = async () => {
-            const email = document.getElementById('email').value;
-            const pass = document.getElementById('password').value;
+        // Fail-safe: If Firebase takes too long
+        setTimeout(() => {
+            if(document.getElementById('splash-screen').style.opacity !== '0') hideSplash();
+        }, 5000);
+
+        window.handleLogin = async () => {
+            const email = document.getElementById('login-email').value;
+            const pass = document.getElementById('login-pass').value;
             try {
                 await signInWithEmailAndPassword(auth, email, pass);
                 Swal.fire({ icon: 'success', title: 'Admin Verified', showConfirmButton: false, timer: 1500 });
-            } catch (e) { Swal.fire('Denied', 'Invalid Admin Credentials', 'error'); }
+            } catch (e) { Swal.fire('Error', 'Invalid Admin Access', 'error'); }
         };
 
-        window.logoutUser = () => {
-            signOut(auth).then(() => location.reload());
+        window.handleLogout = () => {
+            Swal.fire({ title: 'Logout?', icon: 'warning', showCancelButton: true }).then(r => {
+                if(r.isConfirmed) signOut(auth).then(() => location.reload());
+            });
         };
 
-        function showDashboard() {
-            document.getElementById('login-section').style.display = 'none';
-            document.getElementById('dashboard-section').style.display = 'block';
-            document.getElementById('nav-bar').style.display = 'flex';
-            gsap.from("#dashboard-section", { opacity:0, y: 20, duration: 0.8 });
-            loadData();
-        }
-
-        function showLogin() {
-            document.getElementById('dashboard-section').style.display = 'none';
-            document.getElementById('login-section').style.display = 'flex';
-            gsap.from("#login-section", { opacity:0, scale: 0.9, duration: 0.8 });
-        }
-
-        function loadData() {
-            onValue(ref(db, DB_PATH), snap => {
-                currentData = snap.val();
-                if(currentData) render(currentData);
+        function loadRealtimeData() {
+            onValue(ref(db, PATH), snap => {
+                store = snap.val();
+                if(store) render(store);
             });
         }
 
         function render(data) {
-            document.getElementById('admin-label-text').innerText = data.admin_label || "DUModZ";
-            document.getElementById('admin-title-input').value = data.admin_label || "";
-            document.getElementById('contact-url').value = data.contact_url || "";
-            document.getElementById('global-blocklist').value = data.global_blocklist || "";
+            document.getElementById('display-admin-label').innerText = data.admin_label || "DUModZ";
+            document.getElementById('input-label').value = data.admin_label || "";
+            document.getElementById('input-url').value = data.contact_url || "";
+            document.getElementById('input-blocklist').value = data.global_blocklist || "";
 
-            const list = document.getElementById('app-list');
-            list.innerHTML = '';
+            const container = document.getElementById('app-container');
+            container.innerHTML = '';
 
             (data.authorized_apps || []).forEach((app, i) => {
-                list.innerHTML += `
-                    <div class="glass-card p-6 border-l-8 border-blue-500">
+                container.innerHTML += `
+                    <div class="glass-card p-6 fade-in border-l-[6px] border-blue-500" style="opacity:1; transform:none;">
                         <div class="flex justify-between items-start mb-4">
-                            <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-2xl flex items-center justify-center text-blue-600">
-                                <i class="fas fa-shield-check text-xl"></i>
-                            </div>
+                            <div class="w-12 h-12 bg-blue-500/10 rounded-2xl flex items-center justify-center text-blue-500"><i class="fas fa-shield-halved text-xl"></i></div>
                             <div class="flex gap-2">
-                                <button onclick="editApp(${i})" class="w-9 h-9 glass-card flex items-center justify-center text-blue-500 text-sm"><i class="fas fa-edit"></i></button>
-                                <button onclick="deleteApp(${i})" class="w-9 h-9 glass-card flex items-center justify-center text-red-500 text-sm"><i class="fas fa-trash"></i></button>
+                                <button onclick="editApp(${i})" class="w-9 h-9 glass-card flex items-center justify-center text-blue-500 text-xs"><i class="fas fa-pen"></i></button>
+                                <button onclick="deleteApp(${i})" class="w-9 h-9 glass-card flex items-center justify-center text-red-500 text-xs"><i class="fas fa-trash"></i></button>
                             </div>
                         </div>
-                        <h4 class="font-black text-lg">${app.note}</h4>
-                        <p class="text-[10px] font-bold opacity-40 uppercase tracking-widest mb-3">${app.package_name}</p>
-                        <div class="sha-box mb-4">${app.sha256_key}</div>
-                        <div class="text-[9px] font-bold text-red-500 flex items-center gap-1">
+                        <h4 class="font-bold text-lg mb-0.5">${app.note}</h4>
+                        <p class="text-[10px] opacity-40 font-bold uppercase tracking-widest mb-4">${app.package_name}</p>
+                        <div class="sha-badge mb-4">${app.sha256_key}</div>
+                        <div class="flex items-center gap-2 text-[10px] font-bold text-red-400">
                             <i class="fas fa-ban"></i> BLOCKLIST: ${app.package_blocklist || 'NONE'}
                         </div>
                     </div>
@@ -330,26 +320,24 @@
             });
         }
 
-        window.saveGlobal = () => {
-            update(ref(db, DB_PATH), {
-                admin_label: document.getElementById('admin-title-input').value,
-                contact_url: document.getElementById('contact-url').value,
-                global_blocklist: document.getElementById('global-blocklist').value
-            }).then(() => Swal.fire('Saved', 'Global configuration updated', 'success'));
+        window.updateGlobal = () => {
+            update(ref(db, PATH), {
+                admin_label: document.getElementById('input-label').value,
+                contact_url: document.getElementById('input-url').value,
+                global_blocklist: document.getElementById('input-blocklist').value
+            }).then(() => Swal.fire('Saved', 'Global System Updated', 'success'));
         };
 
-        window.openAppDialog = async () => {
+        window.openAppModal = async () => {
             const { value: f } = await Swal.fire({
-                title: 'Authorize New App',
-                background: getComputedStyle(document.body).getPropertyValue('--surface'),
-                color: getComputedStyle(document.body).getPropertyValue('--text'),
-                html: `
-                    <div class="space-y-3 pt-4">
-                        <input id="n-note" class="app-input w-full" placeholder="User Name/App Name">
-                        <input id="n-pkg" class="app-input w-full" placeholder="Package Name">
-                        <input id="n-sha" class="app-input w-full" placeholder="SHA256 Key">
-                        <input id="n-block" class="app-input w-full" placeholder="Package Blocklist">
-                    </div>`,
+                title: 'Add New App',
+                html: `<div class="space-y-3 pt-4">
+                    <input id="n-note" class="app-input" placeholder="User Name">
+                    <input id="n-pkg" class="app-input" placeholder="Package Name">
+                    <input id="n-sha" class="app-input" placeholder="SHA256 Key">
+                    <input id="n-block" class="app-input" placeholder="Blocklist">
+                </div>`,
+                showCancelButton: true,
                 preConfirm: () => ({
                     note: document.getElementById('n-note').value,
                     package_name: document.getElementById('n-pkg').value,
@@ -358,25 +346,23 @@
                 })
             });
             if(f) {
-                const apps = currentData.authorized_apps || [];
+                const apps = store.authorized_apps || [];
                 apps.push(f);
-                update(ref(db, DB_PATH), { authorized_apps: apps });
+                update(ref(db, PATH), { authorized_apps: apps });
             }
         };
 
         window.editApp = async (i) => {
-            const a = currentData.authorized_apps[i];
+            const a = store.authorized_apps[i];
             const { value: f } = await Swal.fire({
-                title: 'Edit Application',
-                background: getComputedStyle(document.body).getPropertyValue('--surface'),
-                color: getComputedStyle(document.body).getPropertyValue('--text'),
-                html: `
-                    <div class="space-y-3 pt-4">
-                        <input id="e-note" class="app-input w-full" value="${a.note}">
-                        <input id="e-pkg" class="app-input w-full" value="${a.package_name}">
-                        <input id="e-sha" class="app-input w-full" value="${a.sha256_key}">
-                        <input id="e-block" class="app-input w-full" value="${a.package_blocklist}">
-                    </div>`,
+                title: 'Edit App',
+                html: `<div class="space-y-3 pt-4">
+                    <input id="e-note" class="app-input" value="${a.note}">
+                    <input id="e-pkg" class="app-input" value="${a.package_name}">
+                    <input id="e-sha" class="app-input" value="${a.sha256_key}">
+                    <input id="e-block" class="app-input" value="${a.package_blocklist}">
+                </div>`,
+                showCancelButton: true,
                 preConfirm: () => ({
                     note: document.getElementById('e-note').value,
                     package_name: document.getElementById('e-pkg').value,
@@ -385,24 +371,25 @@
                 })
             });
             if(f) {
-                const apps = [...currentData.authorized_apps];
+                const apps = [...store.authorized_apps];
                 apps[i] = f;
-                update(ref(db, DB_PATH), { authorized_apps: apps });
+                update(ref(db, PATH), { authorized_apps: apps });
             }
         };
 
         window.deleteApp = (i) => {
-            Swal.fire({ title: 'Delete?', text: 'Remove this app authority?', icon: 'warning', showCancelButton:true, confirmButtonColor:'#ef4444' })
-            .then(r => { if(r.isConfirmed) {
-                const apps = currentData.authorized_apps.filter((_, idx) => idx !== i);
-                update(ref(db, DB_PATH), { authorized_apps: apps });
-            }});
+            Swal.fire({ title: 'Delete App?', icon: 'error', showCancelButton: true }).then(r => {
+                if(r.isConfirmed) {
+                    const apps = store.authorized_apps.filter((_, idx) => idx !== i);
+                    update(ref(db, PATH), { authorized_apps: apps });
+                }
+            });
         };
 
-        window.toggleMode = () => {
-            document.body.classList.toggle('dark-mode');
+        window.toggleTheme = () => {
+            const isDark = document.body.classList.toggle('dark-mode');
+            document.getElementById('theme-icon').className = isDark ? 'fas fa-sun' : 'fas fa-moon';
         };
-
     </script>
 </body>
 </html>
