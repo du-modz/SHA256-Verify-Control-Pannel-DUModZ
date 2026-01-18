@@ -3,41 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#4F46E5">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="DUModZ Admin">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="DUModZ Admin">
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="https://raw.githubusercontent.com/du-modz/File-Blogger-Website-DUModZ/refs/heads/main/Img/dumodz-logo.webp">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://raw.githubusercontent.com/du-modz/File-Blogger-Website-DUModZ/refs/heads/main/Img/dumodz-logo.webp">
+    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/du-modz/File-Blogger-Website-DUModZ/refs/heads/main/Img/dumodz-logo.webp">
+    
     <title>DUModZ Admin Pro</title>
     
     <!-- Libraries -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    animation: {
+                        'float': 'float 3s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'slide-up': 'slideUp 0.5s ease-out',
+                        'fade-in': 'fadeIn 0.6s ease-out',
+                        'neumorphic-hover': 'neumorphicHover 0.3s ease-out forwards',
+                        'neumorphic-active': 'neumorphicActive 0.2s ease-out forwards',
+                        'shake': 'shake 0.5s ease-in-out',
+                        'bounce-slow': 'bounce 2s infinite',
+                        'gradient-flow': 'gradientFlow 3s ease infinite',
+                        'spin-slow': 'spin 8s linear infinite'
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' }
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' }
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' }
+                        },
+                        neumorphicHover: {
+                            '0%': { 
+                                boxShadow: '20px 20px 60px #bebebe, -20px -20px 60px #ffffff',
+                                transform: 'translateY(0)' 
+                            },
+                            '100%': { 
+                                boxShadow: '30px 30px 60px #bebebe, -30px -30px 60px #ffffff',
+                                transform: 'translateY(-5px)' 
+                            }
+                        },
+                        neumorphicActive: {
+                            '0%': { 
+                                boxShadow: '20px 20px 60px #bebebe, -20px -20px 60px #ffffff',
+                                transform: 'translateY(0)' 
+                            },
+                            '100%': { 
+                                boxShadow: '10px 10px 20px #bebebe, -10px -10px 20px #ffffff',
+                                transform: 'translateY(2px)' 
+                            }
+                        },
+                        shake: {
+                            '0%, 100%': { transform: 'translateX(0)' },
+                            '25%': { transform: 'translateX(-5px)' },
+                            '75%': { transform: 'translateX(5px)' }
+                        },
+                        gradientFlow: {
+                            '0%, 100%': { backgroundPosition: '0% 50%' },
+                            '50%': { backgroundPosition: '100% 50%' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 
     <style>
         :root {
-            --bg: #F8FAFC;
-            --surface: #FFFFFF;
+            --bg: #F0F0F3;
+            --surface: #F0F0F3;
             --primary: #4F46E5;
             --primary-light: #818CF8;
             --secondary: #10B981;
-            --text: #1E293B;
-            --text-secondary: #64748B;
-            --card-shadow: 0 4px 12px -4px rgba(0, 0, 0, 0.08);
+            --text: #2D3748;
+            --text-secondary: #718096;
+            --card-shadow-light: #ffffff;
+            --card-shadow-dark: #bebebe;
             --border: #E2E8F0;
             --success: #10B981;
             --warning: #F59E0B;
             --danger: #EF4444;
+            --neumorphic-radius: 24px;
+            --neumorphic-shadow: 20px 20px 60px var(--card-shadow-dark), -20px -20px 60px var(--card-shadow-light);
+            --neumorphic-shadow-inset: inset 20px 20px 60px var(--card-shadow-dark), inset -20px -20px 60px var(--card-shadow-light);
         }
 
         .dark-mode {
-            --bg: #0F172A;
-            --surface: #1E293B;
+            --bg: #1A202C;
+            --surface: #2D3748;
             --primary: #818CF8;
             --primary-light: #A5B4FC;
             --secondary: #34D399;
-            --text: #F1F5F9;
-            --text-secondary: #94A3B8;
-            --card-shadow: 0 4px 12px -4px rgba(0, 0, 0, 0.3);
-            --border: #334155;
+            --text: #F7FAFC;
+            --text-secondary: #CBD5E0;
+            --card-shadow-light: #2D3748;
+            --card-shadow-dark: #1A202C;
+            --border: #4A5568;
             --success: #34D399;
             --warning: #FBBF24;
             --danger: #F87171;
@@ -47,12 +130,108 @@
             font-family: 'Outfit', sans-serif;
             background-color: var(--bg);
             color: var(--text);
-            transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             min-height: 100vh;
             margin: 0;
             padding: 0;
-            display: flex;
-            flex-direction: column;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(79, 70, 229, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 85% 30%, rgba(16, 185, 129, 0.1) 0%, transparent 20%);
+        }
+
+        /* Neumorphic Styles */
+        .neumorphic-card {
+            background: var(--surface);
+            border-radius: var(--neumorphic-radius);
+            box-shadow: var(--neumorphic-shadow);
+            border: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .neumorphic-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+            z-index: 1;
+        }
+
+        .neumorphic-card:hover {
+            animation: neumorphic-hover 0.3s ease-out forwards;
+        }
+
+        .neumorphic-card:active {
+            animation: neumorphic-active 0.2s ease-out forwards;
+        }
+
+        .neumorphic-input {
+            background: var(--bg);
+            border: none;
+            border-radius: 20px;
+            padding: 18px 20px;
+            font-size: 16px;
+            color: var(--text);
+            box-shadow: var(--neumorphic-shadow-inset);
+            transition: all 0.3s ease;
+            outline: none;
+            width: 100%;
+        }
+
+        .neumorphic-input:focus {
+            box-shadow: inset 10px 10px 20px var(--card-shadow-dark), 
+                        inset -10px -10px 20px var(--card-shadow-light),
+                        0 0 0 3px rgba(79, 70, 229, 0.2);
+        }
+
+        .neumorphic-button {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border: none;
+            border-radius: 20px;
+            padding: 16px 32px;
+            color: white;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 8px 8px 16px var(--card-shadow-dark), 
+                        -8px -8px 16px var(--card-shadow-light),
+                        0 4px 20px rgba(79, 70, 229, 0.3);
+        }
+
+        .neumorphic-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: 0.5s;
+        }
+
+        .neumorphic-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 12px 12px 24px var(--card-shadow-dark), 
+                        -12px -12px 24px var(--card-shadow-light),
+                        0 6px 24px rgba(79, 70, 229, 0.4);
+        }
+
+        .neumorphic-button:hover::before {
+            left: 100%;
+        }
+
+        .neumorphic-button:active {
+            transform: translateY(1px);
+            box-shadow: 4px 4px 8px var(--card-shadow-dark), 
+                        -4px -4px 8px var(--card-shadow-light);
         }
 
         /* Splash Overlay */
@@ -68,121 +247,245 @@
             transition: opacity 0.5s ease;
         }
 
-        .glass-card {
-            background: var(--surface);
-            backdrop-filter: blur(12px);
-            border: 1px solid var(--border);
-            box-shadow: var(--card-shadow);
-            border-radius: 20px;
-            overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            width: 100%;
-            max-width: 420px;
-        }
-        
-        .glass-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px -4px rgba(0, 0, 0, 0.12);
-        }
-
-        .app-input {
-            background: var(--bg);
-            border: 2px solid var(--border);
-            border-radius: 12px;
-            padding: 14px 16px;
-            width: 100%;
-            outline: none;
-            transition: all 0.3s ease;
-            color: var(--text);
-            font-size: 16px;
-            box-sizing: border-box;
-        }
-
-        .app-input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
-            color: white;
-            padding: 14px 20px;
-            border-radius: 12px;
-            font-weight: 700;
-            box-shadow: 0 4px 10px -2px rgba(79, 70, 229, 0.3);
-            transition: all 0.3s ease;
-            border: none;
-            font-size: 16px;
-            letter-spacing: 0.5px;
-            width: 100%;
-            cursor: pointer;
-        }
-
-        .btn-primary:active {
-            transform: scale(0.98);
-            box-shadow: 0 3px 8px -2px rgba(79, 70, 229, 0.4);
-        }
-
         .sha-badge {
             background: rgba(79, 70, 229, 0.1);
             color: var(--primary);
             font-family: monospace;
             font-size: 11px;
-            padding: 8px 10px;
-            border-radius: 10px;
+            padding: 12px 16px;
+            border-radius: 16px;
             word-break: break-all;
             border: 1px solid rgba(79, 70, 229, 0.2);
-            margin: 8px 0;
+            margin: 12px 0;
+            box-shadow: inset 4px 4px 8px var(--card-shadow-dark), 
+                        inset -4px -4px 8px var(--card-shadow-light);
         }
 
-        .bottom-nav {
+        /* Mobile Navigation */
+        .mobile-nav {
             position: fixed;
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
             width: 90%;
-            max-width: 450px;
+            max-width: 400px;
             z-index: 100;
+            animation: slide-up 0.5s ease-out;
         }
 
-        /* Animations */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(15px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
+        .mobile-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+            border-radius: 20px;
+            background: var(--surface);
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+            box-shadow: var(--neumorphic-shadow);
+            border: none;
+            min-width: 80px;
         }
 
-        /* Mobile specific scroll */
-        ::-webkit-scrollbar { 
-            width: 0; 
+        .mobile-nav-item.active {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            box-shadow: 8px 8px 16px var(--card-shadow-dark), 
+                        -8px -8px 16px var(--card-shadow-light),
+                        0 4px 20px rgba(79, 70, 229, 0.3);
+            transform: translateY(-5px);
         }
-        
-        /* Floating label effect */
+
+        .mobile-nav-item i {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        .mobile-nav-item span {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        /* Desktop Navigation */
+        .desktop-nav {
+            display: none;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            gap: 12px;
+        }
+
+        @media (min-width: 1024px) {
+            .mobile-nav {
+                display: none;
+            }
+            
+            .desktop-nav {
+                display: flex;
+            }
+        }
+
+        /* Floating Action Button */
+        .fab-button {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 99;
+            box-shadow: 8px 8px 16px var(--card-shadow-dark), 
+                        -8px -8px 16px var(--card-shadow-light),
+                        0 6px 20px rgba(79, 70, 229, 0.4);
+            animation: float 3s ease-in-out infinite;
+            transition: all 0.3s ease;
+        }
+
+        .fab-button:hover {
+            transform: scale(1.1) translateY(-5px);
+            box-shadow: 12px 12px 24px var(--card-shadow-dark), 
+                        -12px -12px 24px var(--card-shadow-light),
+                        0 8px 24px rgba(79, 70, 229, 0.5);
+        }
+
+        /* Advanced Animations */
+        .pulse-ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px solid var(--primary);
+            animation: pulse-slow 2s infinite;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(-45deg, #4F46E5, #818CF8, #10B981, #34D399);
+            background-size: 400% 400%;
+            animation: gradient-flow 3s ease infinite;
+        }
+
+        /* Status Indicator */
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--success);
+            box-shadow: 0 0 10px var(--success);
+            animation: pulse-slow 2s infinite;
+        }
+
+        .dark-mode .status-indicator {
+            box-shadow: 0 0 15px var(--success);
+        }
+
+        /* App Card Enhancements */
+        .app-card {
+            border-left: 6px solid transparent;
+            border-image: linear-gradient(135deg, var(--primary), var(--primary-light)) 1;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: center;
+        }
+
+        .app-card:hover {
+            transform: perspective(1000px) rotateX(2deg) rotateY(2deg) translateY(-8px);
+            box-shadow: 30px 30px 60px var(--card-shadow-dark), 
+                        -30px -30px 60px var(--card-shadow-light),
+                        0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Loading Animation */
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(79, 70, 229, 0.1);
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            animation: spin-slow 1s linear infinite;
+        }
+
+        /* Grid Layout */
+        .apps-grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .apps-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .apps-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .config-section {
+                grid-column: span 2;
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-light);
+        }
+
+        /* Floating Label Effect */
         .floating-label {
             position: relative;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
         
         .floating-label input,
         .floating-label textarea {
-            padding: 18px 16px 8px;
-            border-radius: 12px;
+            padding: 24px 20px 8px;
+            border-radius: 20px;
             background: var(--bg);
-            border: 2px solid var(--border);
+            border: none;
             color: var(--text);
             transition: all 0.3s ease;
             font-size: 16px;
+            box-shadow: var(--neumorphic-shadow-inset);
+            width: 100%;
+            box-sizing: border-box;
         }
         
         .floating-label label {
             position: absolute;
             top: 16px;
-            left: 16px;
+            left: 20px;
             color: var(--text-secondary);
             font-size: 14px;
             font-weight: 600;
             pointer-events: none;
             transition: all 0.3s ease;
+            background: var(--bg);
+            padding: 0 8px;
+            border-radius: 10px;
         }
         
         .floating-label input:focus + label,
@@ -190,549 +493,95 @@
         .floating-label textarea:focus + label,
         .floating-label textarea:not(:placeholder-shown) + label {
             top: 8px;
-            left: 12px;
+            left: 16px;
             font-size: 12px;
             color: var(--primary);
             background: var(--surface);
-            padding: 0 6px;
-            border-radius: 4px;
+            box-shadow: 4px 4px 8px var(--card-shadow-dark), 
+                        -4px -4px 8px var(--card-shadow-light);
         }
         
         .floating-label input:focus,
         .floating-label textarea:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+            box-shadow: inset 10px 10px 20px var(--card-shadow-dark), 
+                        inset -10px -10px 20px var(--card-shadow-light),
+                        0 0 0 3px rgba(79, 70, 229, 0.2);
         }
-        
-        /* Icon styling */
-        .icon-primary {
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .icon-secondary {
-            background: linear-gradient(135deg, var(--secondary), #059669);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        /* Header styling */
+
+        /* Header Styling */
         header {
-            padding: 16px;
+            padding: 20px;
             backdrop-filter: blur(20px);
-            background: rgba(255, 255, 255, 0.8);
-            border-bottom: 1px solid var(--border);
+            background: rgba(240, 240, 243, 0.8);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.3);
             position: sticky;
             top: 0;
             z-index: 50;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
         }
         
         .dark-mode header {
-            background: rgba(15, 23, 42, 0.8);
-            border-bottom: 1px solid var(--border);
+            background: rgba(26, 32, 44, 0.8);
+            border-bottom: 1px solid rgba(74, 85, 104, 0.3);
         }
-        
-        /* App card styling */
-        .app-card {
-            border-left: 4px solid var(--primary);
-            transition: all 0.3s ease;
-            margin-bottom: 20px;
-        }
-        
-        .app-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px -4px rgba(0, 0, 0, 0.12);
-        }
-        
-        /* Status badge */
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 700;
-            background: rgba(16, 185, 129, 0.15);
-            color: var(--success);
-        }
-        
-        .dark-mode .status-badge {
-            background: rgba(52, 211, 153, 0.15);
-        }
-        
-        /* Action buttons */
-        .action-btn {
-            width: 32px;
-            height: 32px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s ease;
-            border: 1px solid var(--border);
-        }
-        
-        .action-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-        
-        .edit-btn {
-            background: rgba(79, 70, 229, 0.1);
-            color: var(--primary);
-        }
-        
-        .delete-btn {
-            background: rgba(239, 68, 68, 0.1);
-            color: var(--danger);
-        }
-        
-        /* Loading bar */
-        #loading-bar {
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary), var(--primary-light));
-            border-radius: 2px;
-            transition: width 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        /* Main content padding */
+
+        /* Main Content */
         main {
             flex: 1;
-            padding: 24px 16px 120px;
-            max-width: 768px;
+            padding: 24px;
+            max-width: 1400px;
             margin: 0 auto;
             width: 100%;
         }
-        
-        /* Responsive adjustments */
-        @media (min-width: 768px) {
+
+        /* Install Prompt */
+        #install-prompt {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 400px;
+            z-index: 1000;
+            animation: slide-up 0.5s ease-out;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .neumorphic-card {
+                border-radius: 20px;
+                box-shadow: 10px 10px 30px var(--card-shadow-dark), 
+                            -10px -10px 30px var(--card-shadow-light);
+            }
+            
             main {
-                padding: 32px 24px 120px;
+                padding: 16px;
             }
             
-            .glass-card {
-                border-radius: 24px;
-            }
-            
-            header {
-                padding: 20px 24px;
-            }
-            
-            .btn-primary {
-                padding: 16px 24px;
-            }
-            
-            .floating-label input,
-            .floating-label textarea {
-                padding: 20px 20px 8px;
+            .fab-button {
+                bottom: 90px;
+                right: 16px;
+                width: 56px;
+                height: 56px;
             }
         }
-        
-        /* Mobile optimizations */
+
         @media (max-width: 480px) {
-            .glass-card {
+            .neumorphic-card {
                 border-radius: 18px;
-                margin: 0 12px;
-            }
-            
-            header {
-                padding: 14px 16px;
-            }
-            
-            .btn-primary {
-                padding: 12px 16px;
-                font-size: 15px;
-            }
-            
-            .floating-label {
-                margin-bottom: 16px;
             }
             
             .floating-label input,
             .floating-label textarea {
-                padding: 16px 14px 6px;
+                padding: 20px 16px 6px;
                 font-size: 15px;
             }
             
             .floating-label label {
                 top: 14px;
-                left: 14px;
+                left: 16px;
                 font-size: 13px;
             }
-            
-            .floating-label input:focus + label,
-            .floating-label input:not(:placeholder-shown) + label,
-            .floating-label textarea:focus + label,
-            .floating-label textarea:not(:placeholder-shown) + label {
-                top: 6px;
-                left: 10px;
-                font-size: 11px;
-            }
-        }
-        
-        /* Bottom nav */
-        .bottom-nav {
-            bottom: 16px;
-        }
-        
-        @media (min-width: 768px) {
-            .bottom-nav {
-                bottom: 24px;
-            }
-        }
-        
-        /* App container */
-        #app-container {
-            margin-top: 16px;
-        }
-        
-        /* Header spacing */
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-        }
-        
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        
-        .logo-container {
-            position: relative;
-            width: 48px;
-            height: 48px;
-        }
-        
-        .logo-container img {
-            width: 100%;
-            height: 100%;
-            border-radius: 14px;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .header-title {
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .header-actions {
-            display: flex;
-            gap: 12px;
-        }
-        
-        .action-button {
-            width: 42px;
-            height: 42px;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            transition: all 0.2s ease;
-        }
-        
-        .action-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-        
-        /* Config card */
-        .config-card {
-            padding: 24px;
-            margin-bottom: 24px;
-        }
-        
-        @media (min-width: 768px) {
-            .config-card {
-                padding: 32px;
-            }
-        }
-        
-        .config-header {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            margin-bottom: 24px;
-        }
-        
-        .config-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 14px;
-            background: rgba(79, 70, 229, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .config-title {
-            font-size: 20px;
-            font-weight: 700;
-        }
-        
-        .config-content {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        
-        /* List section */
-        .list-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 24px 0 16px;
-            padding: 0 8px;
-        }
-        
-        .list-title {
-            font-size: 22px;
-            font-weight: 800;
-        }
-        
-        .add-button {
-            padding: 8px 16px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
-            color: white;
-            border-radius: 12px;
-            font-size: 14px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            box-shadow: 0 4px 10px -2px rgba(79, 70, 229, 0.3);
-            transition: all 0.2s ease;
-        }
-        
-        .add-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px -2px rgba(79, 70, 229, 0.4);
-        }
-        
-        /* App card styles */
-        .app-card-content {
-            padding: 20px;
-        }
-        
-        @media (min-width: 768px) {
-            .app-card-content {
-                padding: 24px;
-            }
-        }
-        
-        .app-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 16px;
-        }
-        
-        .app-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 12px;
-            background: rgba(79, 70, 229, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .app-actions {
-            display: flex;
-            gap: 8px;
-        }
-        
-        .app-title {
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-        
-        .app-package {
-            font-size: 13px;
-            opacity: 0.7;
-            font-weight: 600;
-            margin-bottom: 12px;
-        }
-        
-        .app-blocklist {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 13px;
-            font-weight: 700;
-        }
-        
-        .blocklist-label {
-            opacity: 0.7;
-        }
-        
-        .blocklist-value {
-            color: var(--danger);
-        }
-        
-        .blocklist-none {
-            color: var(--success);
-        }
-        
-        /* Bottom nav styles */
-        .nav-container {
-            padding: 12px;
-            border-radius: 20px;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            background: var(--surface);
-            border: 1px solid var(--border);
-        }
-        
-        .nav-button {
-            width: 48px;
-            height: 48px;
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            transition: all 0.2s ease;
-        }
-        
-        .nav-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-        
-        .add-app-button {
-            width: 60px;
-            height: 60px;
-            border-radius: 20px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            box-shadow: 0 6px 16px -4px rgba(79, 70, 229, 0.4);
-            border: 4px solid var(--bg);
-            transition: all 0.2s ease;
-            transform: translateY(-24px);
-        }
-        
-        .add-app-button:hover {
-            transform: translateY(-26px);
-            box-shadow: 0 8px 20px -4px rgba(79, 70, 229, 0.5);
-        }
-        
-        .scroll-top {
-            width: 44px;
-            height: 44px;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            transition: all 0.2s ease;
-        }
-        
-        .scroll-top:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-        
-        /* Splash screen */
-        .splash-logo {
-            width: 100px;
-            height: 100px;
-            border-radius: 24px;
-            margin-bottom: 24px;
-            position: relative;
-        }
-        
-        .splash-logo::after {
-            content: "";
-            position: absolute;
-            inset: -4px;
-            border-radius: 28px;
-            background: linear-gradient(45deg, var(--primary), var(--primary-light));
-            opacity: 0.3;
-            z-index: -1;
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 0.3; }
-            50% { transform: scale(1.05); opacity: 0.4; }
-            100% { transform: scale(1); opacity: 0.3; }
-        }
-        
-        .loading-container {
-            width: 200px;
-            height: 6px;
-            background: var(--border);
-            border-radius: 3px;
-            overflow: hidden;
-            margin-bottom: 20px;
-        }
-        
-        .splash-text {
-            font-size: 12px;
-            font-weight: 700;
-            letter-spacing: 0.3em;
-            opacity: 0.6;
-            text-transform: uppercase;
-        }
-        
-        /* Login UI */
-        .login-container {
-            padding: 28px;
-            width: 100%;
-            max-width: 400px;
-        }
-        
-        .login-logo {
-            width: 80px;
-            height: 80px;
-            border-radius: 20px;
-            margin: 0 auto 24px;
-            position: relative;
-        }
-        
-        .login-logo::after {
-            content: "";
-            position: absolute;
-            inset: -4px;
-            border-radius: 24px;
-            background: linear-gradient(45deg, var(--primary), var(--primary-light));
-            opacity: 0.3;
-            z-index: -1;
-        }
-        
-        .login-title {
-            font-size: 28px;
-            font-weight: 800;
-            margin-bottom: 8px;
-        }
-        
-        .login-subtitle {
-            font-size: 15px;
-            opacity: 0.7;
-            margin-bottom: 28px;
-        }
-        
-        .login-form {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
         }
     </style>
 </head>
@@ -740,121 +589,176 @@
 
     <!-- Splash Screen -->
     <div id="splash-screen">
-        <div class="splash-logo">
-            <img src="https://raw.githubusercontent.com/du-modz/File-Blogger-Website-DUModZ/refs/heads/main/Img/dumodz-logo.webp" 
-                 class="w-full h-full rounded-2xl">
+        <div class="relative mb-8">
+            <div class="w-32 h-32 rounded-3xl overflow-hidden shadow-2xl">
+                <img src="https://raw.githubusercontent.com/du-modz/File-Blogger-Website-DUModZ/refs/heads/main/Img/dumodz-logo.webp" 
+                     class="w-full h-full object-cover">
+            </div>
+            <div class="pulse-ring rounded-3xl"></div>
         </div>
-        <div class="loading-container">
-            <div id="loading-bar" class="h-full w-0"></div>
-        </div>
-        <p class="splash-text">System Verifying...</p>
+        <div class="loading-spinner mb-6"></div>
+        <p class="text-sm font-semibold text-gray-500 tracking-widest animate-pulse">INITIALIZING SYSTEM...</p>
     </div>
 
     <!-- Login UI -->
-    <div id="login-ui" class="hidden min-h-screen flex items-center justify-center p-4">
-        <div class="glass-card login-container">
-            <div class="login-logo">
-                <img src="https://raw.githubusercontent.com/du-modz/File-Blogger-Website-DUModZ/refs/heads/main/Img/dumodz-logo.webp" 
-                     class="w-full h-full rounded-xl">
+    <div id="login-ui" class="hidden min-h-screen flex items-center justify-center p-6">
+        <div class="neumorphic-card w-full max-w-md p-8 animate-fade-in">
+            <div class="text-center mb-10">
+                <div class="w-24 h-24 rounded-2xl overflow-hidden mx-auto mb-6 shadow-xl">
+                    <img src="https://raw.githubusercontent.com/du-modz/File-Blogger-Website-DUModZ/refs/heads/main/Img/dumodz-logo.webp" 
+                         class="w-full h-full object-cover">
+                </div>
+                <h1 class="text-3xl font-bold mb-2">Admin Portal</h1>
+                <p class="text-gray-500">Secure access to system configuration</p>
             </div>
-            <h1 class="login-title text-center">Welcome Back</h1>
-            <p class="login-subtitle text-center">Secure Admin Access Required</p>
             
-            <div class="login-form">
+            <div class="space-y-6">
                 <div class="floating-label">
-                    <input list="emails" id="login-email" class="app-input" placeholder=" ">
+                    <input list="emails" id="login-email" class="neumorphic-input" placeholder=" ">
                     <label for="login-email">ADMIN EMAIL</label>
                     <datalist id="emails">
                         <option value="dumodz.info@gmail.com">
                     </datalist>
                 </div>
                 <div class="floating-label">
-                    <input type="password" id="login-pass" class="app-input" placeholder=" ">
+                    <input type="password" id="login-pass" class="neumorphic-input" placeholder=" ">
                     <label for="login-pass">PASSWORD</label>
                 </div>
-                <button onclick="handleLogin()" class="btn-primary">Login Securely</button>
+                <button onclick="handleLogin()" class="neumorphic-button w-full">Secure Login</button>
             </div>
         </div>
     </div>
 
     <!-- Dashboard UI -->
-    <div id="dashboard-ui" class="hidden flex flex-col min-h-screen">
-        <!-- Sticky Header -->
-        <header>
-            <div class="header-content">
-                <div class="header-left">
-                    <div class="logo-container">
+    <div id="dashboard-ui" class="hidden min-h-screen">
+        <!-- Header -->
+        <header class="neumorphic-card !rounded-none !shadow-none border-b">
+            <div class="max-w-7xl mx-auto flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl overflow-hidden">
                         <img src="https://raw.githubusercontent.com/du-modz/File-Blogger-Website-DUModZ/refs/heads/main/Img/dumodz-logo.webp" 
-                             class="w-full h-full">
+                             class="w-full h-full object-cover">
                     </div>
-                    <div class="header-title">
-                        <h2 id="display-admin-label" class="text-lg font-extrabold leading-none">DUModZ Pro</h2>
-                        <div class="status-badge">
-                            <i class="fas fa-circle text-xs"></i> Server Live
+                    <div>
+                        <h2 id="display-admin-label" class="text-xl font-bold">DUModZ Admin</h2>
+                        <div class="flex items-center gap-2">
+                            <div class="status-indicator"></div>
+                            <span class="text-sm text-green-500 font-semibold">Connected</span>
                         </div>
                     </div>
                 </div>
-                <div class="header-actions">
-                    <button onclick="toggleTheme()" class="action-button">
-                        <i class="fas fa-moon icon-primary text-lg" id="theme-icon"></i>
+                
+                <!-- Desktop Navigation -->
+                <div class="desktop-nav">
+                    <button onclick="toggleTheme()" class="neumorphic-card w-12 h-12 flex items-center justify-center">
+                        <i class="fas fa-moon text-lg" id="theme-icon"></i>
                     </button>
-                    <button onclick="handleLogout()" class="action-button">
-                        <i class="fas fa-power-off icon-secondary text-lg"></i>
+                    <button onclick="handleLogout()" class="neumorphic-card w-12 h-12 flex items-center justify-center">
+                        <i class="fas fa-power-off text-lg text-red-500"></i>
+                    </button>
+                    <button onclick="installPWA()" class="neumorphic-button !p-3 !w-12 !h-12">
+                        <i class="fas fa-download"></i>
                     </button>
                 </div>
             </div>
         </header>
 
-        <main>
-            <!-- Global Config Card -->
-            <div class="glass-card config-card fade-in">
-                <div class="config-header">
-                    <div class="config-icon">
-                        <i class="fas fa-cog icon-primary text-xl"></i>
+        <main class="p-6 max-w-7xl mx-auto">
+            <!-- System Config Card -->
+            <div class="neumorphic-card p-8 mb-8 animate-slide-up config-section">
+                <div class="flex items-center gap-4 mb-8">
+                    <div class="neumorphic-card w-14 h-14 flex items-center justify-center">
+                        <i class="fas fa-cog text-2xl text-purple-500"></i>
                     </div>
-                    <h2 class="config-title">System Configuration</h2>
+                    <div>
+                        <h3 class="text-2xl font-bold">System Configuration</h3>
+                        <p class="text-gray-500">Manage global settings and preferences</p>
+                    </div>
                 </div>
-                <div class="config-content">
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="floating-label">
-                        <input id="input-label" class="app-input" placeholder=" ">
+                        <input id="input-label" class="neumorphic-input" placeholder=" ">
                         <label for="input-label">ADMIN LABEL</label>
                     </div>
                     <div class="floating-label">
-                        <input id="input-url" class="app-input" placeholder=" ">
+                        <input id="input-url" class="neumorphic-input" placeholder=" ">
                         <label for="input-url">CONTACT URL</label>
                     </div>
-                    <div class="floating-label">
-                        <textarea id="input-blocklist" class="app-input" placeholder=" " rows="3"></textarea>
+                    <div class="floating-label md:col-span-2">
+                        <textarea id="input-blocklist" class="neumorphic-input" placeholder=" " rows="4"></textarea>
                         <label for="input-blocklist">GLOBAL BLOCKLIST</label>
                     </div>
-                    <button onclick="updateGlobal()" class="btn-primary py-4 text-sm uppercase tracking-widest">Save System Config</button>
                 </div>
-            </div>
-
-            <!-- List Section -->
-            <div class="list-header">
-                <h3 class="list-title">Authorized Apps</h3>
-                <button onclick="openAppModal()" class="add-button">
-                    <i class="fas fa-plus mr-1"></i> ADD NEW
+                
+                <button onclick="updateGlobal()" class="neumorphic-button mt-8 w-full md:w-auto px-12">
+                    <i class="fas fa-save mr-2"></i> Save Configuration
                 </button>
             </div>
 
-            <div id="app-container">
-                <!-- Cards will load here -->
+            <!-- Apps Section -->
+            <div class="flex items-center justify-between mb-6">
+                <div>
+                    <h3 class="text-2xl font-bold">Authorized Applications</h3>
+                    <p class="text-gray-500">Manage your verified applications</p>
+                </div>
+                <button onclick="openAppModal()" class="neumorphic-button">
+                    <i class="fas fa-plus mr-2"></i> Add New App
+                </button>
+            </div>
+
+            <div id="app-container" class="apps-grid">
+                <!-- App cards will load here -->
             </div>
         </main>
 
-        <!-- Floating Nav -->
-        <div class="bottom-nav">
-            <div class="nav-container">
-                <button class="nav-button">
-                    <i class="fas fa-house icon-primary text-lg"></i>
-                </button>
-                <button onclick="openAppModal()" class="add-app-button">
-                    <i class="fas fa-plus"></i>
-                </button>
-                <button onclick="window.scrollTo({top:0, behavior:'smooth'})" class="scroll-top">
-                    <i class="fas fa-arrow-up text-gray-400 text-lg"></i>
+        <!-- Mobile Navigation -->
+        <div class="mobile-nav">
+            <div class="neumorphic-card p-3">
+                <div class="flex items-center justify-around">
+                    <button class="mobile-nav-item active">
+                        <i class="fas fa-home"></i>
+                        <span>Home</span>
+                    </button>
+                    <button class="mobile-nav-item">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </button>
+                    <button onclick="openAppModal()" class="mobile-nav-item !min-w-16 !h-16 gradient-bg text-white">
+                        <i class="fas fa-plus text-xl"></i>
+                    </button>
+                    <button class="mobile-nav-item" onclick="toggleTheme()">
+                        <i class="fas fa-moon" id="mobile-theme-icon"></i>
+                        <span>Theme</span>
+                    </button>
+                    <button class="mobile-nav-item">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating Action Button (Mobile) -->
+        <button onclick="window.scrollTo({top:0,behavior:'smooth'})" class="fab-button md:hidden">
+            <i class="fas fa-arrow-up"></i>
+        </button>
+
+        <!-- Install Prompt -->
+        <div id="install-prompt" class="neumorphic-card p-6 hidden">
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-lg overflow-hidden">
+                        <img src="https://raw.githubusercontent.com/du-modz/File-Blogger-Website-DUModZ/refs/heads/main/Img/dumodz-logo.webp" 
+                             class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <h4 class="font-bold">Install DUModZ Admin</h4>
+                        <p class="text-sm text-gray-500">Use as native app</p>
+                    </div>
+                </div>
+                <button onclick="installPWA()" class="neumorphic-button !px-4 !py-2 text-sm">
+                    Install
                 </button>
             </div>
         </div>
@@ -866,7 +770,7 @@
         import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-        // Your Config
+        // Firebase Config
         const firebaseConfig = {
             apiKey: "AIzaSyC_DtbizYw47RMwx6QG-CSTPdpEgmIQ7wM",
             authDomain: "sha257-varify-dumodz.firebaseapp.com",
@@ -882,26 +786,70 @@
         const auth = getAuth(app);
         const PATH = "verify-sha256-data-dumodz";
         let store = null;
+        let deferredPrompt = null;
+
+        // PWA Installation Handler
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            setTimeout(() => {
+                document.getElementById('install-prompt').classList.remove('hidden');
+            }, 3000);
+        });
+
+        window.installPWA = async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    document.getElementById('install-prompt').classList.add('hidden');
+                }
+                deferredPrompt = null;
+            }
+        };
+
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js').catch(err => {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+            });
+        }
 
         // UI Controller
         const hideSplash = () => {
-            document.getElementById('loading-bar').style.width = '100%';
-            setTimeout(() => {
-                gsap.to("#splash-screen", { opacity: 0, pointerEvents: 'none', duration: 0.5 });
-            }, 500);
+            gsap.to("#splash-screen", { opacity: 0, duration: 0.8, onComplete: () => {
+                document.getElementById('splash-screen').style.display = 'none';
+            }});
         };
 
         const showUI = (type) => {
             document.getElementById('login-ui').classList.add('hidden');
             document.getElementById('dashboard-ui').classList.add('hidden');
-            if(type === 'login') document.getElementById('login-ui').classList.remove('hidden');
+            
+            if(type === 'login') {
+                document.getElementById('login-ui').classList.remove('hidden');
+                gsap.from("#login-ui .neumorphic-card", { 
+                    opacity: 0, 
+                    y: 30, 
+                    duration: 0.8,
+                    ease: "power3.out" 
+                });
+            }
             if(type === 'dashboard') {
                 document.getElementById('dashboard-ui').classList.remove('hidden');
-                gsap.to(".fade-in", { opacity: 1, y: 0, stagger: 0.1, duration: 0.8 });
+                gsap.from(".animate-slide-up", { 
+                    opacity: 0, 
+                    y: 20, 
+                    duration: 0.6,
+                    stagger: 0.1,
+                    ease: "back.out(1.7)" 
+                });
             }
         };
 
-        // Auth Listener (Persistent)
+        // Auth Listener
         onAuthStateChanged(auth, user => {
             if (user) {
                 loadRealtimeData();
@@ -912,25 +860,36 @@
             hideSplash();
         });
 
-        // Fail-safe: If Firebase takes too long
-        setTimeout(() => {
-            if(document.getElementById('splash-screen').style.opacity !== '0') hideSplash();
-        }, 5000);
+        // Fail-safe
+        setTimeout(hideSplash, 5000);
 
+        // Login Handler
         window.handleLogin = async () => {
             const email = document.getElementById('login-email').value;
             const pass = document.getElementById('login-pass').value;
+            
+            if (!email || !pass) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Missing Information',
+                    text: 'Please enter both email and password',
+                    confirmButtonText: 'Okay'
+                });
+                return;
+            }
+
             try {
                 await signInWithEmailAndPassword(auth, email, pass);
                 Swal.fire({ 
                     icon: 'success', 
-                    title: 'Admin Verified', 
+                    title: 'Welcome Back!', 
+                    text: 'Successfully authenticated',
                     showConfirmButton: false, 
                     timer: 1500
                 });
             } catch (e) { 
                 Swal.fire({
-                    title: 'Authentication Error',
+                    title: 'Authentication Failed',
                     text: 'Invalid credentials. Please try again.',
                     icon: 'error',
                     confirmButtonText: 'Try Again'
@@ -938,28 +897,45 @@
             }
         };
 
+        // Logout Handler
         window.handleLogout = () => {
             Swal.fire({ 
-                title: 'Logout?', 
+                title: 'Logout Confirmation', 
                 text: "Are you sure you want to log out?",
                 icon: 'warning', 
                 showCancelButton: true,
                 confirmButtonText: 'Yes, Logout',
-                cancelButtonText: 'Cancel'
+                cancelButtonText: 'Cancel',
+                confirmButtonColor: '#EF4444'
             }).then(r => {
-                if(r.isConfirmed) signOut(auth).then(() => location.reload());
+                if(r.isConfirmed) {
+                    signOut(auth).then(() => {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Logged Out',
+                            text: 'Successfully logged out',
+                            timer: 1500,
+                            showConfirmButton: false
+                        });
+                    });
+                }
             });
         };
 
+        // Load Realtime Data
         function loadRealtimeData() {
             onValue(ref(db, PATH), snap => {
                 store = snap.val();
-                if(store) render(store);
+                if(store) {
+                    render(store);
+                    animateCards();
+                }
             });
         }
 
+        // Render Data
         function render(data) {
-            document.getElementById('display-admin-label').innerText = data.admin_label || "DUModZ";
+            document.getElementById('display-admin-label').innerText = data.admin_label || "DUModZ Admin";
             document.getElementById('input-label').value = data.admin_label || "";
             document.getElementById('input-url').value = data.contact_url || "";
             document.getElementById('input-blocklist').value = data.global_blocklist || "";
@@ -968,30 +944,42 @@
             container.innerHTML = '';
 
             (data.authorized_apps || []).forEach((app, i) => {
+                const hasBlocklist = app.package_blocklist && app.package_blocklist.trim() !== '';
                 container.innerHTML += `
-                    <div class="app-card glass-card fade-in" style="opacity:1; transform:none;">
-                        <div class="app-card-content">
-                            <div class="app-header">
-                                <div class="app-icon">
-                                    <i class="fas fa-shield-halved icon-primary text-lg"></i>
+                    <div class="app-card neumorphic-card animate-fade-in">
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-6">
+                                <div class="neumorphic-card w-14 h-14 flex items-center justify-center">
+                                    <i class="fas fa-shield-alt text-xl ${hasBlocklist ? 'text-red-500' : 'text-green-500'}"></i>
                                 </div>
-                                <div class="app-actions">
-                                    <button onclick="editApp(${i})" class="action-btn edit-btn">
-                                        <i class="fas fa-pen text-xs"></i>
+                                <div class="flex gap-2">
+                                    <button onclick="editApp(${i})" class="neumorphic-card w-10 h-10 flex items-center justify-center text-blue-500 hover:text-blue-600">
+                                        <i class="fas fa-edit"></i>
                                     </button>
-                                    <button onclick="deleteApp(${i})" class="action-btn delete-btn">
-                                        <i class="fas fa-trash text-xs"></i>
+                                    <button onclick="deleteApp(${i})" class="neumorphic-card w-10 h-10 flex items-center justify-center text-red-500 hover:text-red-600">
+                                        <i class="fas fa-trash"></i>
                                     </button>
                                 </div>
                             </div>
-                            <h4 class="app-title">${app.note}</h4>
-                            <p class="app-package">${app.package_name}</p>
-                            <div class="sha-badge">${app.sha256_key}</div>
-                            <div class="app-blocklist">
-                                <i class="fas fa-ban text-red-500"></i> 
-                                <span class="blocklist-label">BLOCKLIST:</span> 
-                                <span class="${app.package_blocklist ? 'blocklist-value' : 'blocklist-none'}">
-                                    ${app.package_blocklist || 'NONE'}
+                            
+                            <h4 class="text-xl font-bold mb-2">${app.note}</h4>
+                            <p class="text-gray-500 text-sm mb-4 font-mono">${app.package_name}</p>
+                            
+                            <div class="sha-badge mb-4">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="text-xs font-semibold">SHA256 KEY</span>
+                                    <i class="fas fa-fingerprint text-blue-500"></i>
+                                </div>
+                                <div class="font-mono text-xs">${app.sha256_key}</div>
+                            </div>
+                            
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <i class="fas fa-ban ${hasBlocklist ? 'text-red-500' : 'text-green-500'}"></i>
+                                    <span class="text-sm font-semibold">Blocklist:</span>
+                                </div>
+                                <span class="text-sm font-semibold ${hasBlocklist ? 'text-red-500' : 'text-green-500'}">
+                                    ${hasBlocklist ? app.package_blocklist : 'NONE'}
                                 </span>
                             </div>
                         </div>
@@ -1000,128 +988,226 @@
             });
         }
 
+        // Animate Cards
+        function animateCards() {
+            gsap.from('.app-card', {
+                opacity: 0,
+                y: 20,
+                duration: 0.6,
+                stagger: 0.1,
+                ease: "power2.out"
+            });
+        }
+
+        // Update Global Config
         window.updateGlobal = () => {
-            update(ref(db, PATH), {
+            const updates = {
                 admin_label: document.getElementById('input-label').value,
                 contact_url: document.getElementById('input-url').value,
                 global_blocklist: document.getElementById('input-blocklist').value
-            }).then(() => {
+            };
+
+            update(ref(db, PATH), updates).then(() => {
                 Swal.fire({
                     icon: 'success',
                     title: 'Configuration Saved',
-                    text: 'Global system settings updated successfully',
+                    text: 'Global settings updated successfully',
                     showConfirmButton: false,
                     timer: 2000
+                });
+                gsap.from('.config-section', {
+                    scale: 1.02,
+                    duration: 0.3,
+                    ease: "back.out(1.7)"
+                });
+            }).catch(error => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Save Failed',
+                    text: 'Failed to save configuration. Please try again.',
+                    confirmButtonText: 'Okay'
                 });
             });
         };
 
+        // App Modal Functions
         window.openAppModal = async () => {
-            const { value: f } = await Swal.fire({
-                title: 'Add New Authorized App',
-                html: `<div class="space-y-4 pt-4">
-                    <div class="floating-label">
-                        <input id="n-note" class="app-input" placeholder=" ">
-                        <label for="n-note">User Name</label>
+            const { value: formData } = await Swal.fire({
+                title: 'Add New Application',
+                html: `
+                    <div class="space-y-4 pt-2">
+                        <div class="floating-label">
+                            <input id="n-note" class="neumorphic-input" placeholder=" ">
+                            <label for="n-note">Application Name</label>
+                        </div>
+                        <div class="floating-label">
+                            <input id="n-pkg" class="neumorphic-input" placeholder=" ">
+                            <label for="n-pkg">Package Name</label>
+                        </div>
+                        <div class="floating-label">
+                            <input id="n-sha" class="neumorphic-input" placeholder=" ">
+                            <label for="n-sha">SHA256 Key</label>
+                        </div>
+                        <div class="floating-label">
+                            <input id="n-block" class="neumorphic-input" placeholder=" ">
+                            <label for="n-block">Blocklist (Optional)</label>
+                        </div>
                     </div>
-                    <div class="floating-label">
-                        <input id="n-pkg" class="app-input" placeholder=" ">
-                        <label for="n-pkg">Package Name</label>
-                    </div>
-                    <div class="floating-label">
-                        <input id="n-sha" class="app-input" placeholder=" ">
-                        <label for="n-sha">SHA256 Key</label>
-                    </div>
-                    <div class="floating-label">
-                        <input id="n-block" class="app-input" placeholder=" ">
-                        <label for="n-block">Blocklist</label>
-                    </div>
-                </div>`,
+                `,
                 showCancelButton: true,
-                confirmButtonText: 'Add App',
+                confirmButtonText: 'Add Application',
                 cancelButtonText: 'Cancel',
-                preConfirm: () => ({
-                    note: document.getElementById('n-note').value,
-                    package_name: document.getElementById('n-pkg').value,
-                    sha256_key: document.getElementById('n-sha').value,
-                    package_blocklist: document.getElementById('n-block').value
-                })
+                confirmButtonColor: '#4F46E5',
+                customClass: {
+                    popup: 'neumorphic-card !bg-transparent !shadow-none'
+                },
+                didOpen: () => {
+                    document.querySelectorAll('.swal2-input').forEach(input => {
+                        input.classList.add('neumorphic-input');
+                    });
+                },
+                preConfirm: () => {
+                    return {
+                        note: document.getElementById('n-note').value,
+                        package_name: document.getElementById('n-pkg').value,
+                        sha256_key: document.getElementById('n-sha').value,
+                        package_blocklist: document.getElementById('n-block').value
+                    };
+                }
             });
-            if(f) {
+
+            if (formData) {
                 const apps = store.authorized_apps || [];
-                apps.push(f);
-                update(ref(db, PATH), { authorized_apps: apps });
+                apps.push(formData);
+                update(ref(db, PATH), { authorized_apps: apps }).then(() => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Application Added',
+                        text: 'New application added successfully',
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                });
             }
         };
 
         window.editApp = async (i) => {
-            const a = store.authorized_apps[i];
-            const { value: f } = await Swal.fire({
-                title: 'Edit Authorized App',
-                html: `<div class="space-y-4 pt-4">
-                    <div class="floating-label">
-                        <input id="e-note" class="app-input" value="${a.note}" placeholder=" ">
-                        <label for="e-note">User Name</label>
+            const app = store.authorized_apps[i];
+            const { value: formData } = await Swal.fire({
+                title: 'Edit Application',
+                html: `
+                    <div class="space-y-4 pt-2">
+                        <div class="floating-label">
+                            <input id="e-note" class="neumorphic-input" value="${app.note}" placeholder=" ">
+                            <label for="e-note">Application Name</label>
+                        </div>
+                        <div class="floating-label">
+                            <input id="e-pkg" class="neumorphic-input" value="${app.package_name}" placeholder=" ">
+                            <label for="e-pkg">Package Name</label>
+                        </div>
+                        <div class="floating-label">
+                            <input id="e-sha" class="neumorphic-input" value="${app.sha256_key}" placeholder=" ">
+                            <label for="e-sha">SHA256 Key</label>
+                        </div>
+                        <div class="floating-label">
+                            <input id="e-block" class="neumorphic-input" value="${app.package_blocklist || ''}" placeholder=" ">
+                            <label for="e-block">Blocklist (Optional)</label>
+                        </div>
                     </div>
-                    <div class="floating-label">
-                        <input id="e-pkg" class="app-input" value="${a.package_name}" placeholder=" ">
-                        <label for="e-pkg">Package Name</label>
-                    </div>
-                    <div class="floating-label">
-                        <input id="e-sha" class="app-input" value="${a.sha256_key}" placeholder=" ">
-                        <label for="e-sha">SHA256 Key</label>
-                    </div>
-                    <div class="floating-label">
-                        <input id="e-block" class="app-input" value="${a.package_blocklist}" placeholder=" ">
-                        <label for="e-block">Blocklist</label>
-                    </div>
-                </div>`,
+                `,
                 showCancelButton: true,
-                confirmButtonText: 'Update App',
+                confirmButtonText: 'Update Application',
                 cancelButtonText: 'Cancel',
-                preConfirm: () => ({
-                    note: document.getElementById('e-note').value,
-                    package_name: document.getElementById('e-pkg').value,
-                    sha256_key: document.getElementById('e-sha').value,
-                    package_blocklist: document.getElementById('e-block').value
-                })
+                confirmButtonColor: '#4F46E5',
+                customClass: {
+                    popup: 'neumorphic-card !bg-transparent !shadow-none'
+                },
+                didOpen: () => {
+                    document.querySelectorAll('.swal2-input').forEach(input => {
+                        input.classList.add('neumorphic-input');
+                    });
+                },
+                preConfirm: () => {
+                    return {
+                        note: document.getElementById('e-note').value,
+                        package_name: document.getElementById('e-pkg').value,
+                        sha256_key: document.getElementById('e-sha').value,
+                        package_blocklist: document.getElementById('e-block').value
+                    };
+                }
             });
-            if(f) {
+
+            if (formData) {
                 const apps = [...store.authorized_apps];
-                apps[i] = f;
-                update(ref(db, PATH), { authorized_apps: apps });
+                apps[i] = formData;
+                update(ref(db, PATH), { authorized_apps: apps }).then(() => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Application Updated',
+                        text: 'Application details updated successfully',
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                });
             }
         };
 
         window.deleteApp = (i) => {
             Swal.fire({ 
-                title: 'Delete App?', 
-                text: "This action cannot be undone. Are you sure?",
-                icon: 'error', 
+                title: 'Delete Application?', 
+                text: "This action cannot be undone. The application will be permanently removed.",
+                icon: 'warning', 
                 showCancelButton: true,
                 confirmButtonText: 'Yes, Delete',
-                cancelButtonText: 'Cancel'
+                cancelButtonText: 'Cancel',
+                confirmButtonColor: '#EF4444',
+                reverseButtons: true
             }).then(r => {
                 if(r.isConfirmed) {
                     const apps = store.authorized_apps.filter((_, idx) => idx !== i);
-                    update(ref(db, PATH), { authorized_apps: apps });
+                    update(ref(db, PATH), { authorized_apps: apps }).then(() => {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Deleted',
+                            text: 'Application deleted successfully',
+                            timer: 1500,
+                            showConfirmButton: false
+                        });
+                    });
                 }
             });
         };
 
+        // Theme Toggle
         window.toggleTheme = () => {
             const isDark = document.body.classList.toggle('dark-mode');
-            document.getElementById('theme-icon').className = isDark ? 'fas fa-sun icon-primary text-lg' : 'fas fa-moon icon-primary text-lg';
+            const themeIcon = document.getElementById('theme-icon');
+            const mobileThemeIcon = document.getElementById('mobile-theme-icon');
             
-            // Save preference to localStorage
+            if (isDark) {
+                themeIcon.className = 'fas fa-sun text-lg text-yellow-500';
+                mobileThemeIcon.className = 'fas fa-sun';
+            } else {
+                themeIcon.className = 'fas fa-moon text-lg text-purple-500';
+                mobileThemeIcon.className = 'fas fa-moon';
+            }
+            
             localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            
+            // Animate theme change
+            gsap.from('body', {
+                backgroundColor: isDark ? '#F0F0F3' : '#1A202C',
+                duration: 0.5,
+                ease: "power2.inOut"
+            });
         };
         
-        // Check for saved theme preference
+        // Load saved theme
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme === 'dark') {
             document.body.classList.add('dark-mode');
-            document.getElementById('theme-icon').className = 'fas fa-sun icon-primary text-lg';
+            document.getElementById('theme-icon').className = 'fas fa-sun text-lg text-yellow-500';
+            document.getElementById('mobile-theme-icon').className = 'fas fa-sun';
         }
     </script>
 </body>
