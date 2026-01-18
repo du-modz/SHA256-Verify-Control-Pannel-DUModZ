@@ -14,26 +14,43 @@
 
     <style>
         :root {
-            --bg: #F0F3F7;
+            --bg: #F8FAFC;
             --surface: #FFFFFF;
-            --primary: #2D5BFF;
+            --primary: #4F46E5;
+            --primary-light: #818CF8;
+            --secondary: #10B981;
             --text: #1E293B;
-            --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+            --text-secondary: #64748B;
+            --card-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
+            --border: #E2E8F0;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
         }
 
         .dark-mode {
             --bg: #0F172A;
             --surface: #1E293B;
-            --primary: #60A5FA;
+            --primary: #818CF8;
+            --primary-light: #A5B4FC;
+            --secondary: #34D399;
             --text: #F1F5F9;
-            --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+            --text-secondary: #94A3B8;
+            --card-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.3);
+            --border: #334155;
+            --success: #34D399;
+            --warning: #FBBF24;
+            --danger: #F87171;
         }
 
         body {
             font-family: 'Outfit', sans-serif;
             background-color: var(--bg);
             color: var(--text);
-            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         /* Splash Overlay */
@@ -46,48 +63,68 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            transition: opacity 0.5s ease;
         }
 
         .glass-card {
             background: var(--surface);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
             box-shadow: var(--card-shadow);
-            border-radius: 28px;
+            border-radius: 24px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .glass-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px -10px rgba(0, 0, 0, 0.15);
         }
 
         .app-input {
             background: var(--bg);
-            border: 2px solid transparent;
-            border-radius: 18px;
-            padding: 14px 18px;
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            padding: 16px 20px;
             width: 100%;
             outline: none;
-            transition: 0.3s;
+            transition: all 0.3s ease;
+            color: var(--text);
+            font-size: 16px;
         }
 
-        .app-input:focus { border-color: var(--primary); }
+        .app-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+        }
 
         .btn-primary {
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
             color: white;
-            padding: 16px;
-            border-radius: 18px;
+            padding: 16px 24px;
+            border-radius: 16px;
             font-weight: 700;
-            box-shadow: 0 10px 15px -3px rgba(45, 91, 255, 0.3);
-            transition: 0.3s;
+            box-shadow: 0 10px 20px -5px rgba(79, 70, 229, 0.3);
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 16px;
+            letter-spacing: 0.5px;
         }
 
-        .btn-primary:active { transform: scale(0.95); }
+        .btn-primary:active {
+            transform: scale(0.98);
+            box-shadow: 0 5px 15px -5px rgba(79, 70, 229, 0.4);
+        }
 
         .sha-badge {
-            background: rgba(45, 91, 255, 0.1);
+            background: rgba(79, 70, 229, 0.1);
             color: var(--primary);
             font-family: monospace;
             font-size: 11px;
-            padding: 8px;
+            padding: 10px 12px;
             border-radius: 12px;
             word-break: break-all;
+            border: 1px solid rgba(79, 70, 229, 0.2);
         }
 
         .bottom-nav {
@@ -101,86 +138,281 @@
         }
 
         /* Animations */
-        .fade-in { opacity: 0; transform: translateY(20px); }
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
 
         /* Mobile specific scroll */
-        ::-webkit-scrollbar { width: 0; }
+        ::-webkit-scrollbar { 
+            width: 0; 
+        }
+        
+        /* Custom scrollbar for desktop */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+        
+        /* Floating label effect */
+        .floating-label {
+            position: relative;
+            margin-bottom: 24px;
+        }
+        
+        .floating-label input,
+        .floating-label textarea {
+            padding: 20px 16px 8px;
+            border-radius: 16px;
+            background: var(--bg);
+            border: 2px solid var(--border);
+            color: var(--text);
+            transition: all 0.3s ease;
+        }
+        
+        .floating-label label {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 600;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+        
+        .floating-label input:focus + label,
+        .floating-label input:not(:placeholder-shown) + label,
+        .floating-label textarea:focus + label,
+        .floating-label textarea:not(:placeholder-shown) + label {
+            top: 8px;
+            left: 12px;
+            font-size: 12px;
+            color: var(--primary);
+            background: var(--surface);
+            padding: 0 6px;
+            border-radius: 4px;
+        }
+        
+        .floating-label input:focus,
+        .floating-label textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+        }
+        
+        /* Icon styling */
+        .icon-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .icon-secondary {
+            background: linear-gradient(135deg, var(--secondary), #059669);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Header styling */
+        header {
+            padding: 16px 24px;
+            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.8);
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .dark-mode header {
+            background: rgba(15, 23, 42, 0.8);
+            border-bottom: 1px solid var(--border);
+        }
+        
+        /* App card styling */
+        .app-card {
+            border-left: 4px solid var(--primary);
+            transition: all 0.3s ease;
+        }
+        
+        .app-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* Status badge */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+        }
+        
+        .dark-mode .status-badge {
+            background: rgba(52, 211, 153, 0.15);
+        }
+        
+        /* Action buttons */
+        .action-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            border: 1px solid var(--border);
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .edit-btn {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary);
+        }
+        
+        .delete-btn {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+        }
+        
+        /* Loading bar */
+        #loading-bar {
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-light));
+            border-radius: 2px;
+            transition: width 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* Main content padding */
+        main {
+            flex: 1;
+            padding-bottom: 120px;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 640px) {
+            .glass-card {
+                border-radius: 20px;
+            }
+            
+            header {
+                padding: 12px 16px;
+            }
+            
+            .btn-primary {
+                padding: 14px 20px;
+            }
+        }
     </style>
 </head>
 <body class="min-h-screen">
 
     <!-- Splash Screen -->
     <div id="splash-screen">
-        <img src="https://raw.githubusercontent.com/du-modz/File-Blogger-Website-DUModZ/refs/heads/main/Img/dumod-logo.webp" 
-             class="w-24 h-24 rounded-[30px] shadow-2xl mb-6 animate-pulse">
-        <div class="w-48 h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-            <div id="loading-bar" class="h-full bg-blue-500 w-0 transition-all duration-700"></div>
+        <div class="relative">
+            <img src="https://raw.githubusercontent.com/du-modz/File-Blogger-Website-DUModZ/refs/heads/main/Img/dumodz-logo.webp" 
+                 class="w-28 h-28 rounded-2xl shadow-2xl mb-6 animate-pulse">
+            <div class="absolute -inset-2 bg-blue-500 rounded-2xl opacity-20 animate-ping"></div>
         </div>
-        <p class="mt-4 text-[10px] font-bold uppercase tracking-[0.3em] opacity-40">System Verifying...</p>
+        <div class="w-64 h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+            <div id="loading-bar" class="h-full w-0"></div>
+        </div>
+        <p class="mt-6 text-xs font-bold uppercase tracking-[0.3em] opacity-60">System Verifying...</p>
     </div>
 
     <!-- Login UI -->
     <div id="login-ui" class="hidden min-h-screen flex items-center justify-center p-6">
-        <div class="glass-card p-10 w-full max-w-[400px] text-center">
-            <img src="https://raw.githubusercontent.com/du-modz/File-Blogger-Website-DUModZ/refs/heads/main/Img/dumod-logo.webp" 
-                 class="w-20 h-20 mx-auto rounded-2xl mb-6 shadow-xl">
-            <h1 class="text-3xl font-extrabold mb-1">Welcome</h1>
-            <p class="text-sm opacity-50 mb-8">Admin Access Required</p>
+        <div class="glass-card p-8 w-full max-w-[420px] text-center">
+            <div class="relative inline-block mb-6">
+                <img src="https://raw.githubusercontent.com/du-modz/File-Blogger-Website-DUModZ/refs/heads/main/Img/dumodz-logo.webp" 
+                     class="w-24 h-24 mx-auto rounded-2xl shadow-xl">
+                <div class="absolute -inset-1 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-2xl blur opacity-30"></div>
+            </div>
+            <h1 class="text-3xl font-extrabold mb-2">Welcome Back</h1>
+            <p class="text-sm opacity-70 mb-8">Secure Admin Access Required</p>
             
-            <div class="space-y-4 text-left">
-                <div class="group">
-                    <label class="text-[11px] font-bold ml-3 mb-1 block opacity-60">ADMIN EMAIL</label>
-                    <input list="emails" id="login-email" class="app-input" placeholder="Select or enter email">
+            <div class="space-y-5 text-left">
+                <div class="floating-label">
+                    <input list="emails" id="login-email" class="app-input" placeholder=" ">
+                    <label for="login-email">ADMIN EMAIL</label>
                     <datalist id="emails">
                         <option value="dumodz.info@gmail.com">
                     </datalist>
                 </div>
-                <div>
-                    <label class="text-[11px] font-bold ml-3 mb-1 block opacity-60">PASSWORD</label>
-                    <input type="password" id="login-pass" class="app-input" placeholder="••••••••">
+                <div class="floating-label">
+                    <input type="password" id="login-pass" class="app-input" placeholder=" ">
+                    <label for="login-pass">PASSWORD</label>
                 </div>
-                <button onclick="handleLogin()" class="btn-primary w-full mt-4">Login Securely</button>
+                <button onclick="handleLogin()" class="btn-primary w-full mt-2">Login Securely</button>
             </div>
         </div>
     </div>
 
     <!-- Dashboard UI -->
-    <div id="dashboard-ui" class="hidden pb-40">
+    <div id="dashboard-ui" class="hidden flex flex-col min-h-screen">
         <!-- Sticky Header -->
-        <header class="sticky top-0 z-50 p-6 flex justify-between items-center backdrop-blur-xl bg-[var(--bg)]/80">
-            <div class="flex items-center gap-3">
-                <img src="https://raw.githubusercontent.com/du-modz/File-Blogger-Website-DUModZ/refs/heads/main/Img/dumod-logo.webp" 
-                     class="w-12 h-12 rounded-xl shadow-lg border-2 border-white/20">
+        <header class="sticky top-0 z-50 flex justify-between items-center">
+            <div class="flex items-center gap-4">
+                <div class="relative">
+                    <img src="https://raw.githubusercontent.com/du-modz/File-Blogger-Website-DUModZ/refs/heads/main/Img/dumodz-logo.webp" 
+                         class="w-14 h-14 rounded-xl shadow-lg border-2 border-white/20">
+                    <div class="absolute -inset-1 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-xl blur opacity-30"></div>
+                </div>
                 <div>
                     <h2 id="display-admin-label" class="text-xl font-extrabold leading-none">DUModZ Pro</h2>
-                    <span class="text-[9px] font-bold text-green-500 uppercase tracking-widest">Server Live</span>
+                    <div class="status-badge">
+                        <i class="fas fa-circle text-xs"></i> Server Live
+                    </div>
                 </div>
             </div>
             <div class="flex gap-3">
-                <button onclick="toggleTheme()" class="w-11 h-11 glass-card flex items-center justify-center text-lg"><i class="fas fa-moon" id="theme-icon"></i></button>
-                <button onclick="handleLogout()" class="w-11 h-11 glass-card flex items-center justify-center text-red-500"><i class="fas fa-power-off"></i></button>
+                <button onclick="toggleTheme()" class="w-12 h-12 glass-card flex items-center justify-center text-lg">
+                    <i class="fas fa-moon icon-primary" id="theme-icon"></i>
+                </button>
+                <button onclick="handleLogout()" class="w-12 h-12 glass-card flex items-center justify-center">
+                    <i class="fas fa-power-off icon-secondary"></i>
+                </button>
             </div>
         </header>
 
-        <main class="max-w-[768px] mx-auto px-6 mt-4">
+        <main class="max-w-[768px] mx-auto px-6 mt-6">
             <!-- Global Config Card -->
-            <div class="glass-card p-8 mb-10 fade-in">
-                <div class="flex items-center gap-3 mb-6">
-                    <div class="w-10 h-10 bg-blue-500/10 rounded-xl flex items-center justify-center text-blue-500"><i class="fas fa-cog"></i></div>
+            <div class="glass-card p-7 mb-10 fade-in">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-12 h-12 bg-blue-500/10 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-cog icon-primary text-xl"></i>
+                    </div>
                     <h2 class="text-xl font-bold">System Configuration</h2>
                 </div>
-                <div class="space-y-4">
-                    <div class="app-input flex flex-col">
-                        <span class="text-[9px] font-bold opacity-40 mb-1">ADMIN LABEL</span>
-                        <input id="input-label" class="bg-transparent font-bold outline-none">
+                <div class="space-y-5">
+                    <div class="floating-label">
+                        <input id="input-label" class="app-input" placeholder=" ">
+                        <label for="input-label">ADMIN LABEL</label>
                     </div>
-                    <div class="app-input flex flex-col">
-                        <span class="text-[9px] font-bold opacity-40 mb-1">CONTACT URL</span>
-                        <input id="input-url" class="bg-transparent font-bold outline-none text-blue-500">
+                    <div class="floating-label">
+                        <input id="input-url" class="app-input" placeholder=" ">
+                        <label for="input-url">CONTACT URL</label>
                     </div>
-                    <div class="app-input flex flex-col">
-                        <span class="text-[9px] font-bold opacity-40 mb-1">GLOBAL BLOCKLIST</span>
-                        <textarea id="input-blocklist" class="bg-transparent font-bold outline-none h-20 resize-none"></textarea>
+                    <div class="floating-label">
+                        <textarea id="input-blocklist" class="app-input" placeholder=" " rows="3"></textarea>
+                        <label for="input-blocklist">GLOBAL BLOCKLIST</label>
                     </div>
                     <button onclick="updateGlobal()" class="btn-primary w-full py-4 text-sm uppercase tracking-widest">Save System Config</button>
                 </div>
@@ -189,7 +421,7 @@
             <!-- List Section -->
             <div class="flex justify-between items-center mb-6 px-2">
                 <h3 class="text-2xl font-black">Authorized Apps</h3>
-                <button onclick="openAppModal()" class="px-5 py-2.5 bg-blue-500 text-white rounded-xl text-xs font-bold shadow-lg shadow-blue-500/30">
+                <button onclick="openAppModal()" class="px-5 py-2.5 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-xl text-xs font-bold shadow-lg shadow-blue-500/30 hover:shadow-xl transition-all">
                     <i class="fas fa-plus mr-1"></i> ADD NEW
                 </button>
             </div>
@@ -201,12 +433,16 @@
 
         <!-- Floating Nav -->
         <div class="bottom-nav">
-            <div class="glass-card p-3 flex justify-around items-center backdrop-blur-2xl">
-                <button class="w-14 h-14 rounded-2xl text-blue-500 bg-blue-500/10 flex items-center justify-center text-xl"><i class="fas fa-house"></i></button>
-                <button onclick="openAppModal()" class="w-16 h-16 bg-blue-500 text-white rounded-3xl shadow-xl flex items-center justify-center text-2xl -translate-y-8 border-[6px] border-[var(--bg)] transition-all active:scale-90">
+            <div class="glass-card p-4 flex justify-around items-center backdrop-blur-2xl">
+                <button class="w-14 h-14 rounded-2xl text-blue-500 bg-blue-500/10 flex items-center justify-center text-xl">
+                    <i class="fas fa-house icon-primary"></i>
+                </button>
+                <button onclick="openAppModal()" class="w-18 h-18 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-3xl shadow-xl flex items-center justify-center text-2xl -translate-y-8 border-[6px] border-[var(--bg)] transition-all active:scale-95">
                     <i class="fas fa-plus"></i>
                 </button>
-                <button onclick="window.scrollTo({top:0, behavior:'smooth'})" class="w-14 h-14 flex items-center justify-center text-gray-400 text-xl"><i class="fas fa-arrow-up"></i></button>
+                <button onclick="window.scrollTo({top:0, behavior:'smooth'})" class="w-14 h-14 flex items-center justify-center text-gray-400 text-xl">
+                    <i class="fas fa-arrow-up"></i>
+                </button>
             </div>
         </div>
     </div>
@@ -273,12 +509,34 @@
             const pass = document.getElementById('login-pass').value;
             try {
                 await signInWithEmailAndPassword(auth, email, pass);
-                Swal.fire({ icon: 'success', title: 'Admin Verified', showConfirmButton: false, timer: 1500 });
-            } catch (e) { Swal.fire('Error', 'Invalid Admin Access', 'error'); }
+                Swal.fire({ 
+                    icon: 'success', 
+                    title: 'Admin Verified', 
+                    showConfirmButton: false, 
+                    timer: 1500,
+                    customClass: {
+                        popup: 'swal2-border'
+                    }
+                });
+            } catch (e) { 
+                Swal.fire({
+                    title: 'Authentication Error',
+                    text: 'Invalid credentials. Please try again.',
+                    icon: 'error',
+                    confirmButtonText: 'Try Again'
+                }); 
+            }
         };
 
         window.handleLogout = () => {
-            Swal.fire({ title: 'Logout?', icon: 'warning', showCancelButton: true }).then(r => {
+            Swal.fire({ 
+                title: 'Logout?', 
+                text: "Are you sure you want to log out?",
+                icon: 'warning', 
+                showCancelButton: true,
+                confirmButtonText: 'Yes, Logout',
+                cancelButtonText: 'Cancel'
+            }).then(r => {
                 if(r.isConfirmed) signOut(auth).then(() => location.reload());
             });
         };
@@ -301,19 +559,29 @@
 
             (data.authorized_apps || []).forEach((app, i) => {
                 container.innerHTML += `
-                    <div class="glass-card p-6 fade-in border-l-[6px] border-blue-500" style="opacity:1; transform:none;">
+                    <div class="app-card glass-card p-6 fade-in" style="opacity:1; transform:none;">
                         <div class="flex justify-between items-start mb-4">
-                            <div class="w-12 h-12 bg-blue-500/10 rounded-2xl flex items-center justify-center text-blue-500"><i class="fas fa-shield-halved text-xl"></i></div>
+                            <div class="w-12 h-12 bg-blue-500/10 rounded-2xl flex items-center justify-center">
+                                <i class="fas fa-shield-halved icon-primary text-xl"></i>
+                            </div>
                             <div class="flex gap-2">
-                                <button onclick="editApp(${i})" class="w-9 h-9 glass-card flex items-center justify-center text-blue-500 text-xs"><i class="fas fa-pen"></i></button>
-                                <button onclick="deleteApp(${i})" class="w-9 h-9 glass-card flex items-center justify-center text-red-500 text-xs"><i class="fas fa-trash"></i></button>
+                                <button onclick="editApp(${i})" class="action-btn edit-btn">
+                                    <i class="fas fa-pen text-xs"></i>
+                                </button>
+                                <button onclick="deleteApp(${i})" class="action-btn delete-btn">
+                                    <i class="fas fa-trash text-xs"></i>
+                                </button>
                             </div>
                         </div>
-                        <h4 class="font-bold text-lg mb-0.5">${app.note}</h4>
-                        <p class="text-[10px] opacity-40 font-bold uppercase tracking-widest mb-4">${app.package_name}</p>
+                        <h4 class="font-bold text-lg mb-1">${app.note}</h4>
+                        <p class="text-xs opacity-70 font-medium mb-4">${app.package_name}</p>
                         <div class="sha-badge mb-4">${app.sha256_key}</div>
-                        <div class="flex items-center gap-2 text-[10px] font-bold text-red-400">
-                            <i class="fas fa-ban"></i> BLOCKLIST: ${app.package_blocklist || 'NONE'}
+                        <div class="flex items-center gap-2 text-xs font-bold">
+                            <i class="fas fa-ban text-red-500"></i> 
+                            <span>BLOCKLIST:</span> 
+                            <span class="${app.package_blocklist ? 'text-red-500' : 'text-green-500'}">
+                                ${app.package_blocklist || 'NONE'}
+                            </span>
                         </div>
                     </div>
                 `;
@@ -325,19 +593,41 @@
                 admin_label: document.getElementById('input-label').value,
                 contact_url: document.getElementById('input-url').value,
                 global_blocklist: document.getElementById('input-blocklist').value
-            }).then(() => Swal.fire('Saved', 'Global System Updated', 'success'));
+            }).then(() => {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Configuration Saved',
+                    text: 'Global system settings updated successfully',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+            });
         };
 
         window.openAppModal = async () => {
             const { value: f } = await Swal.fire({
-                title: 'Add New App',
-                html: `<div class="space-y-3 pt-4">
-                    <input id="n-note" class="app-input" placeholder="User Name">
-                    <input id="n-pkg" class="app-input" placeholder="Package Name">
-                    <input id="n-sha" class="app-input" placeholder="SHA256 Key">
-                    <input id="n-block" class="app-input" placeholder="Blocklist">
+                title: 'Add New Authorized App',
+                html: `<div class="space-y-4 pt-4">
+                    <div class="floating-label">
+                        <input id="n-note" class="app-input" placeholder=" ">
+                        <label for="n-note">User Name</label>
+                    </div>
+                    <div class="floating-label">
+                        <input id="n-pkg" class="app-input" placeholder=" ">
+                        <label for="n-pkg">Package Name</label>
+                    </div>
+                    <div class="floating-label">
+                        <input id="n-sha" class="app-input" placeholder=" ">
+                        <label for="n-sha">SHA256 Key</label>
+                    </div>
+                    <div class="floating-label">
+                        <input id="n-block" class="app-input" placeholder=" ">
+                        <label for="n-block">Blocklist</label>
+                    </div>
                 </div>`,
                 showCancelButton: true,
+                confirmButtonText: 'Add App',
+                cancelButtonText: 'Cancel',
                 preConfirm: () => ({
                     note: document.getElementById('n-note').value,
                     package_name: document.getElementById('n-pkg').value,
@@ -355,14 +645,28 @@
         window.editApp = async (i) => {
             const a = store.authorized_apps[i];
             const { value: f } = await Swal.fire({
-                title: 'Edit App',
-                html: `<div class="space-y-3 pt-4">
-                    <input id="e-note" class="app-input" value="${a.note}">
-                    <input id="e-pkg" class="app-input" value="${a.package_name}">
-                    <input id="e-sha" class="app-input" value="${a.sha256_key}">
-                    <input id="e-block" class="app-input" value="${a.package_blocklist}">
+                title: 'Edit Authorized App',
+                html: `<div class="space-y-4 pt-4">
+                    <div class="floating-label">
+                        <input id="e-note" class="app-input" value="${a.note}" placeholder=" ">
+                        <label for="e-note">User Name</label>
+                    </div>
+                    <div class="floating-label">
+                        <input id="e-pkg" class="app-input" value="${a.package_name}" placeholder=" ">
+                        <label for="e-pkg">Package Name</label>
+                    </div>
+                    <div class="floating-label">
+                        <input id="e-sha" class="app-input" value="${a.sha256_key}" placeholder=" ">
+                        <label for="e-sha">SHA256 Key</label>
+                    </div>
+                    <div class="floating-label">
+                        <input id="e-block" class="app-input" value="${a.package_blocklist}" placeholder=" ">
+                        <label for="e-block">Blocklist</label>
+                    </div>
                 </div>`,
                 showCancelButton: true,
+                confirmButtonText: 'Update App',
+                cancelButtonText: 'Cancel',
                 preConfirm: () => ({
                     note: document.getElementById('e-note').value,
                     package_name: document.getElementById('e-pkg').value,
@@ -378,7 +682,14 @@
         };
 
         window.deleteApp = (i) => {
-            Swal.fire({ title: 'Delete App?', icon: 'error', showCancelButton: true }).then(r => {
+            Swal.fire({ 
+                title: 'Delete App?', 
+                text: "This action cannot be undone. Are you sure?",
+                icon: 'error', 
+                showCancelButton: true,
+                confirmButtonText: 'Yes, Delete',
+                cancelButtonText: 'Cancel'
+            }).then(r => {
                 if(r.isConfirmed) {
                     const apps = store.authorized_apps.filter((_, idx) => idx !== i);
                     update(ref(db, PATH), { authorized_apps: apps });
@@ -388,8 +699,18 @@
 
         window.toggleTheme = () => {
             const isDark = document.body.classList.toggle('dark-mode');
-            document.getElementById('theme-icon').className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+            document.getElementById('theme-icon').className = isDark ? 'fas fa-sun icon-primary' : 'fas fa-moon icon-primary';
+            
+            // Save preference to localStorage
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
         };
+        
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark-mode');
+            document.getElementById('theme-icon').className = 'fas fa-sun icon-primary';
+        }
     </script>
 </body>
 </html>
