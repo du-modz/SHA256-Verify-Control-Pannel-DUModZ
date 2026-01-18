@@ -1,28 +1,24 @@
 {
   "name": "DUModZ Admin Pro",
-  "short_name": "DUModZ",
+  "short_name": "DUModZ Admin",
   "description": "Professional admin panel for DUModZ applications",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#F0F0F3",
+  "background_color": "#F8FAFC",
   "theme_color": "#4F46E5",
-  "orientation": "portrait-primary",
+  "orientation": "portrait",
   "icons": [
     {
       "src": "https://raw.githubusercontent.com/du-modz/File-Blogger-Website-DUModZ/refs/heads/main/Img/dumodz-logo.webp",
       "sizes": "192x192",
-      "type": "image/webp"
+      "type": "image/webp",
+      "purpose": "any maskable"
     },
     {
       "src": "https://raw.githubusercontent.com/du-modz/File-Blogger-Website-DUModZ/refs/heads/main/Img/dumodz-logo.webp",
       "sizes": "512x512",
-      "type": "image/webp"
-    },
-    {
-      "src": "https://raw.githubusercontent.com/du-modz/File-Blogger-Website-DUModZ/refs/heads/main/Img/dumodz-logo.webp",
-      "sizes": "180x180",
       "type": "image/webp",
-      "purpose": "maskable"
+      "purpose": "any maskable"
     }
   ],
   "categories": ["productivity", "utilities"],
@@ -31,13 +27,13 @@
       "name": "Add New App",
       "short_name": "Add App",
       "description": "Add a new authorized application",
-      "url": "/?add=app"
+      "url": "/#add-app"
     },
     {
-      "name": "View Config",
-      "short_name": "Config",
-      "description": "View system configuration",
-      "url": "/?view=config"
+      "name": "View Settings",
+      "short_name": "Settings",
+      "description": "View system settings",
+      "url": "/#settings"
     }
   ]
 }
