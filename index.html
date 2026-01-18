@@ -469,8 +469,8 @@
         /* Floating Action Button */
 .fab-btn {
     position: fixed;
-    bottom: 100px;
     right: 20px;
+    bottom: 100px; /* default, JS will adjust */
     width: 56px;
     height: 56px;
     border-radius: 18px;
@@ -483,16 +483,31 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 9999;          /* 🔥 important */
-    pointer-events: auto;  /* 🔥 important */
-    touch-action: manipulation;
+    z-index: 9999;
+
+    /* animation states */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px) scale(0.9);
+    transition: opacity 0.25s ease,
+                transform 0.25s ease,
+                bottom 0.25s ease;
 }
 
-/* Hover only for desktop */
+.fab-btn.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+
+.fab-btn:active {
+    transform: scale(0.95);
+}
+
+/* Desktop hover only */
 @media (hover: hover) {
     .fab-btn:hover {
-        transform: scale(1.1) rotate(10deg);
-        box-shadow: 0 12px 30px rgba(79, 70, 229, 0.5);
+        transform: scale(1.1);
     }
 }
 
@@ -2040,7 +2055,35 @@
             }
         }
 
-        function scrollToTop() {
+        const fab = document.querySelector('.fab-btn');
+const SHOW_AFTER = 200; // px scroll after show
+const DEFAULT_BOTTOM = 100;
+const EXTRA_GAP = 16;
+
+function getBottomNavbarHeight() {
+    const navbar = document.querySelector('.bottom-navbar');
+    if (!navbar) return 0;
+
+    const style = window.getComputedStyle(navbar);
+    if (style.position !== 'fixed') return 0;
+
+    return navbar.offsetHeight;
+}
+
+function updateFabPosition() {
+    const navbarHeight = getBottomNavbarHeight();
+    fab.style.bottom = (DEFAULT_BOTTOM + navbarHeight + EXTRA_GAP) + 'px';
+}
+
+function handleScroll() {
+    if (window.scrollY > SHOW_AFTER) {
+        fab.classList.add('show');
+    } else {
+        fab.classList.remove('show');
+    }
+}
+
+function scrollToTop() {
     document.documentElement.scrollTo({
         top: 0,
         behavior: 'smooth'
@@ -2051,6 +2094,11 @@
         behavior: 'smooth'
     });
 }
+
+/* Init */
+window.addEventListener('scroll', handleScroll, { passive: true });
+window.addEventListener('resize', updateFabPosition);
+window.addEventListener('load', updateFabPosition);
 
 
         function exportData() {
