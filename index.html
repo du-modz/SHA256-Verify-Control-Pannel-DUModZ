@@ -19,6 +19,41 @@
     
     <!-- Libraries -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4F46E5',
+                        'primary-light': '#818CF8',
+                        secondary: '#10B981',
+                        dark: '#0F172A',
+                        'dark-surface': '#1E293B'
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-up': 'slideUp 0.3s ease-out',
+                        'float': 'float 3s ease-in-out infinite',
+                        'pulse': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' }
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' }
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -32,40 +67,40 @@
         }
 
         :root {
-            --bg: #F8FAFC;
-            --surface: #FFFFFF;
             --primary: #4F46E5;
             --primary-light: #818CF8;
             --secondary: #10B981;
+            --bg: #F8FAFC;
+            --surface: #FFFFFF;
             --text: #1E293B;
             --text-secondary: #64748B;
             --border: #E2E8F0;
             --success: #10B981;
             --warning: #F59E0B;
             --danger: #EF4444;
-            --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
 
         .dark-mode {
-            --bg: #0F172A;
-            --surface: #1E293B;
             --primary: #818CF8;
             --primary-light: #A5B4FC;
             --secondary: #34D399;
+            --bg: #0F172A;
+            --surface: #1E293B;
             --text: #F1F5F9;
             --text-secondary: #94A3B8;
             --border: #334155;
             --success: #34D399;
             --warning: #FBBF24;
             --danger: #F87171;
-            --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
         }
 
         body {
             font-family: 'Outfit', sans-serif;
             background-color: var(--bg);
             color: var(--text);
-            transition: all 0.3s ease;
+            transition: background-color 0.3s ease, color 0.3s ease;
             min-height: 100vh;
             overflow-x: hidden;
         }
@@ -83,16 +118,16 @@
             align-items: center;
             justify-content: center;
             z-index: 9999;
-            transition: opacity 0.5s ease;
         }
 
         .splash-logo {
-            width: 100px;
-            height: 100px;
-            border-radius: 20px;
+            width: 120px;
+            height: 120px;
+            border-radius: 25px;
             margin-bottom: 30px;
             overflow: hidden;
             animation: float 3s ease-in-out infinite;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
         }
 
         .splash-logo img {
@@ -101,16 +136,11 @@
             object-fit: cover;
         }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-        }
-
         .loading-bar {
             width: 200px;
-            height: 4px;
+            height: 6px;
             background: var(--border);
-            border-radius: 2px;
+            border-radius: 3px;
             overflow: hidden;
             margin-bottom: 20px;
         }
@@ -118,7 +148,7 @@
         .loading-progress {
             height: 100%;
             background: linear-gradient(90deg, var(--primary), var(--primary-light));
-            border-radius: 2px;
+            border-radius: 3px;
             transition: width 0.3s ease;
             width: 0%;
         }
@@ -132,7 +162,6 @@
             height: 100%;
             background: var(--bg);
             display: none;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
             padding: 20px;
@@ -142,16 +171,12 @@
         .login-card {
             background: var(--surface);
             border-radius: 20px;
-            padding: 30px;
+            padding: 35px;
             width: 100%;
-            max-width: 400px;
-            box-shadow: var(--card-shadow);
-            animation: slideUp 0.5s ease;
-        }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            max-width: 420px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            animation: slide-up 0.5s ease-out;
         }
 
         /* Dashboard UI */
@@ -164,21 +189,16 @@
             background: var(--bg);
             display: none;
             flex-direction: column;
-            overflow: hidden;
         }
 
         /* Header */
         .header {
             background: var(--surface);
-            padding: 15px 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 18px 20px;
+            border-bottom: 1px solid var(--border);
             position: sticky;
             top: 0;
             z-index: 100;
-        }
-
-        .dark-mode .header {
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
         }
 
         /* Main Content */
@@ -186,22 +206,31 @@
             flex: 1;
             overflow-y: auto;
             padding: 20px;
-            padding-bottom: 80px;
+            padding-bottom: 90px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
         }
 
         /* Cards */
         .card {
             background: var(--surface);
-            border-radius: 15px;
-            padding: 20px;
+            border-radius: 16px;
+            padding: 22px;
             margin-bottom: 20px;
-            box-shadow: var(--card-shadow);
+            box-shadow: var(--shadow);
             border: 1px solid var(--border);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
         }
 
         /* Input Fields */
         .input-group {
-            margin-bottom: 20px;
+            margin-bottom: 22px;
         }
 
         .input-label {
@@ -210,29 +239,37 @@
             font-weight: 600;
             margin-bottom: 8px;
             color: var(--text-secondary);
+            letter-spacing: 0.5px;
         }
 
         .input-field {
             width: 100%;
-            padding: 12px 15px;
+            padding: 14px 18px;
             border: 2px solid var(--border);
-            border-radius: 10px;
+            border-radius: 12px;
             background: var(--bg);
             color: var(--text);
             font-size: 16px;
             transition: all 0.3s ease;
+            font-family: 'Outfit', sans-serif;
         }
 
         .input-field:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+        }
+
+        .textarea-field {
+            min-height: 120px;
+            resize: vertical;
+            line-height: 1.5;
         }
 
         /* Buttons */
         .btn {
-            padding: 12px 24px;
-            border-radius: 10px;
+            padding: 14px 28px;
+            border-radius: 12px;
             font-weight: 600;
             font-size: 16px;
             border: none;
@@ -241,23 +278,23 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 10px;
+            font-family: 'Outfit', sans-serif;
         }
 
         .btn-primary {
             background: linear-gradient(135deg, var(--primary), var(--primary-light));
             color: white;
-            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.2);
+            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.25);
         }
 
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(79, 70, 229, 0.35);
         }
 
-        .btn-danger {
-            background: var(--danger);
-            color: white;
+        .btn-primary:active {
+            transform: translateY(-1px);
         }
 
         .btn-secondary {
@@ -266,90 +303,33 @@
             border: 2px solid var(--border);
         }
 
-        /* App Cards */
-        .app-card {
-            border-left: 4px solid var(--primary);
-            transition: transform 0.3s ease;
+        .btn-secondary:hover {
+            background: var(--bg);
         }
 
-        .app-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .sha-badge {
-            background: rgba(79, 70, 229, 0.1);
-            color: var(--primary);
-            font-family: monospace;
-            font-size: 12px;
-            padding: 10px;
-            border-radius: 8px;
-            word-break: break-all;
-            margin: 10px 0;
-            border: 1px solid rgba(79, 70, 229, 0.2);
-        }
-
-        /* Bottom Navigation */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: var(--surface);
-            padding: 15px;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            border-top: 1px solid var(--border);
-            z-index: 100;
-        }
-
-        .nav-btn {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            font-size: 24px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            padding: 10px;
-            border-radius: 10px;
-        }
-
-        .nav-btn.active {
-            color: var(--primary);
-            background: rgba(79, 70, 229, 0.1);
-        }
-
-        .nav-btn span {
-            font-size: 10px;
-            margin-top: 4px;
-            font-weight: 600;
-        }
-
-        .fab-btn {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+        .btn-danger {
+            background: var(--danger);
             color: white;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            box-shadow: 0 4px 20px rgba(79, 70, 229, 0.4);
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: absolute;
-            bottom: 30px;
-            right: 20px;
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.25);
         }
 
-        .fab-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 25px rgba(79, 70, 229, 0.5);
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        /* SHA Badge */
+        .sha-badge {
+            background: rgba(79, 70, 229, 0.08);
+            color: var(--primary);
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 12px;
+            padding: 12px 15px;
+            border-radius: 10px;
+            word-break: break-all;
+            margin: 12px 0;
+            border: 1px solid rgba(79, 70, 229, 0.15);
+            line-height: 1.6;
         }
 
         /* Status Badge */
@@ -357,94 +337,230 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            padding: 6px 12px;
+            padding: 6px 14px;
             border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+            letter-spacing: 0.3px;
+        }
+
+        /* Enhanced Mobile Navigation */
+        .mobile-nav {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 40px);
+            max-width: 500px;
+            background: var(--surface);
+            border-radius: 20px;
+            padding: 14px 20px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border);
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .mobile-nav.hidden {
+            display: none;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 22px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 10px 15px;
+            border-radius: 14px;
+            min-width: 70px;
+            position: relative;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+            background: rgba(79, 70, 229, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .nav-item.active::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            width: 4px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 50%;
+        }
+
+        .nav-label {
+            font-size: 11px;
+            margin-top: 4px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-add-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: translateY(-15px);
+        }
+
+        .nav-add-btn:hover {
+            transform: translateY(-18px) scale(1.05);
+            box-shadow: 0 12px 30px rgba(79, 70, 229, 0.5);
+        }
+
+        /* Desktop Navigation */
+        .desktop-nav {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        /* Install Button */
+        .install-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.3);
+            border: none;
+            z-index: 99;
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+
+        .install-btn:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 10px 25px rgba(79, 70, 229, 0.4);
+        }
+
+        /* Floating Action Button */
+        .fab-btn {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            border: none;
+            font-size: 22px;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 98;
+        }
+
+        .fab-btn:hover {
+            transform: scale(1.1) rotate(10deg);
+            box-shadow: 0 12px 30px rgba(79, 70, 229, 0.5);
+        }
+
+        /* Grid Layout */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .grid-2 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Apps Grid */
+        .apps-grid {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 18px;
+        }
+
+        @media (min-width: 640px) {
+            .apps-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .apps-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* App Card */
+        .app-card {
+            border-left: 5px solid var(--primary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .app-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, transparent, rgba(79, 70, 229, 0.03));
+            pointer-events: none;
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            border-radius: 12px;
             font-size: 12px;
             font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+
+        .badge-success {
             background: rgba(16, 185, 129, 0.15);
             color: var(--success);
         }
 
-        /* Grid Layout for Desktop */
-        @media (min-width: 768px) {
-            .main-content {
-                padding: 30px;
-                max-width: 1200px;
-                margin: 0 auto;
-            }
-            
-            .config-grid {
-                display: grid;
-                grid-template-columns: repeat(2, 1fr);
-                gap: 20px;
-            }
-            
-            .apps-grid {
-                display: grid;
-                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-                gap: 20px;
-            }
-            
-            .bottom-nav {
-                display: none;
-            }
-            
-            .desktop-nav {
-                display: flex;
-                gap: 10px;
-            }
-            
-            .mobile-only {
-                display: none;
-            }
-        }
-
-        /* Mobile Navigation */
-        @media (max-width: 767px) {
-            .desktop-nav {
-                display: none;
-            }
-            
-            .mobile-only {
-                display: block;
-            }
-        }
-
-        /* Animation Classes */
-        .fade-in {
-            animation: fadeIn 0.5s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .slide-in {
-            animation: slideIn 0.5s ease;
-        }
-
-        @keyframes slideIn {
-            from { transform: translateX(-20px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        /* Scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--bg);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--border);
-            border-radius: 3px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--text-secondary);
+        .badge-danger {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--danger);
         }
 
         /* Utility Classes */
@@ -472,6 +588,10 @@
             justify-content: space-between;
         }
 
+        .justify-around {
+            justify-content: space-around;
+        }
+
         .w-full {
             width: 100%;
         }
@@ -484,48 +604,173 @@
             text-align: center;
         }
 
-        .mb-4 {
-            margin-bottom: 16px;
+        .mb-2 { margin-bottom: 8px; }
+        .mb-3 { margin-bottom: 12px; }
+        .mb-4 { margin-bottom: 16px; }
+        .mb-6 { margin-bottom: 24px; }
+        .mt-2 { margin-top: 8px; }
+        .mt-4 { margin-top: 16px; }
+        .mt-6 { margin-top: 24px; }
+        .gap-2 { gap: 8px; }
+        .gap-3 { gap: 12px; }
+        .gap-4 { gap: 16px; }
+        .rounded-lg { border-radius: 12px; }
+        .rounded-xl { border-radius: 16px; }
+        .text-sm { font-size: 14px; }
+        .text-base { font-size: 16px; }
+        .text-lg { font-size: 18px; }
+        .text-xl { font-size: 24px; }
+        .font-semibold { font-weight: 600; }
+        .font-bold { font-weight: 700; }
+        .font-extrabold { font-weight: 800; }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
         }
 
-        .mb-3 {
-            margin-bottom: 12px;
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+            border-radius: 4px;
         }
 
-        .mb-2 {
-            margin-bottom: 8px;
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
         }
 
-        .mt-4 {
-            margin-top: 16px;
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-secondary);
         }
 
-        .gap-2 {
-            gap: 8px;
+        /* Animations */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
         }
 
-        .gap-4 {
-            gap: 16px;
+        .slide-up {
+            animation: slideUp 0.3s ease-out;
         }
 
-        .rounded-lg {
-            border-radius: 12px;
+        /* PWA Install Banner */
+        .pwa-banner {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 40px);
+            max-width: 400px;
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border);
+            z-index: 999;
+            animation: slideUp 0.5s ease-out;
+            display: none;
         }
 
-        .text-lg {
+        /* Tab Content */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        /* Settings Page */
+        .settings-section {
+            margin-bottom: 30px;
+        }
+
+        .settings-section h3 {
             font-size: 18px;
-        }
-
-        .text-xl {
-            font-size: 24px;
-        }
-
-        .font-bold {
             font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .font-semibold {
-            font-weight: 600;
+        .settings-section h3 i {
+            color: var(--primary);
+        }
+
+        /* Profile Page */
+        .profile-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 25px;
+            overflow: hidden;
+            margin: 0 auto 20px;
+            border: 4px solid var(--primary);
+            padding: 4px;
+            background: var(--surface);
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 20px;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        /* Responsive */
+        @media (min-width: 768px) {
+            .mobile-nav {
+                display: none;
+            }
+
+            .desktop-nav {
+                display: flex;
+            }
+
+            .main-content {
+                padding-bottom: 40px;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .desktop-nav {
+                display: none;
+            }
+
+            .install-btn {
+                top: 15px;
+                right: 15px;
+                width: 44px;
+                height: 44px;
+                font-size: 18px;
+            }
+
+            .fab-btn {
+                bottom: 90px;
+                right: 15px;
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
         }
     </style>
 </head>
@@ -539,137 +784,273 @@
         <div class="loading-bar">
             <div class="loading-progress" id="loading-progress"></div>
         </div>
-        <p class="text-secondary" style="color: var(--text-secondary); font-weight: 600; letter-spacing: 2px;">LOADING SYSTEM...</p>
+        <p style="color: var(--text-secondary); font-weight: 600; letter-spacing: 3px; font-size: 14px;">LOADING SYSTEM...</p>
     </div>
+
+    <!-- Install Button -->
+    <button class="install-btn hidden" onclick="showInstallPrompt()" id="install-button">
+        <i class="fas fa-download"></i>
+    </button>
 
     <!-- Login UI -->
     <div id="login-ui">
         <div class="login-card">
-            <div class="text-center mb-4">
-                <div style="width: 80px; height: 80px; border-radius: 16px; overflow: hidden; margin: 0 auto 20px;">
+            <div class="text-center mb-6">
+                <div style="width: 80px; height: 80px; border-radius: 18px; overflow: hidden; margin: 0 auto 20px; border: 3px solid var(--primary); padding: 3px;">
                     <img src="https://raw.githubusercontent.com/du-modz/File-Blogger-Website-DUModZ/refs/heads/main/Img/dumodz-logo.webp" 
-                         class="w-full h-full object-cover">
+                         class="w-full h-full object-cover rounded-lg">
                 </div>
-                <h1 class="text-xl font-bold mb-2">Admin Access</h1>
-                <p class="text-secondary" style="color: var(--text-secondary);">Secure authentication required</p>
+                <h1 class="text-xl font-extrabold mb-2">Admin Portal</h1>
+                <p style="color: var(--text-secondary); font-size: 14px;">Secure authentication required</p>
             </div>
             
             <div class="input-group">
                 <label class="input-label">ADMIN EMAIL</label>
-                <input type="email" id="login-email" class="input-field" placeholder="admin@dumodz.com" value="dumodz.info@gmail.com">
+                <input type="email" id="login-email" class="input-field" placeholder="admin@dumodz.com" autocomplete="username">
             </div>
             
             <div class="input-group">
                 <label class="input-label">PASSWORD</label>
-                <input type="password" id="login-password" class="input-field" placeholder="Enter password">
+                <input type="password" id="login-password" class="input-field" placeholder="Enter password" autocomplete="current-password">
+            </div>
+            
+            <div class="flex items-center mb-6">
+                <input type="checkbox" id="remember-me" class="mr-3" style="width: 18px; height: 18px;">
+                <label for="remember-me" style="color: var(--text-secondary); font-size: 14px;">Remember me</label>
             </div>
             
             <button onclick="handleLogin()" class="btn btn-primary w-full">
-                <i class="fas fa-lock"></i> Login Securely
+                <i class="fas fa-lock mr-2"></i> Login Securely
             </button>
         </div>
     </div>
 
-    <!-- Dashboard UI -->
-    <div id="dashboard-ui">
-        <!-- Header -->
-        <div class="header flex items-center justify-between">
+    <!-- PWA Install Banner -->
+    <div class="pwa-banner hidden" id="pwa-banner">
+        <div class="flex items-center justify-between mb-4">
             <div class="flex items-center gap-3">
-                <div style="width: 40px; height: 40px; border-radius: 10px; overflow: hidden;">
+                <div style="width: 44px; height: 44px; border-radius: 12px; overflow: hidden;">
                     <img src="https://raw.githubusercontent.com/du-modz/File-Blogger-Website-DUModZ/refs/heads/main/Img/dumodz-logo.webp" 
                          class="w-full h-full object-cover">
                 </div>
                 <div>
-                    <h2 id="admin-label" class="font-bold">DUModZ Admin</h2>
+                    <h4 class="font-bold">Install DUModZ Admin</h4>
+                    <p style="color: var(--text-secondary); font-size: 12px;">Use as native app for better experience</p>
+                </div>
+            </div>
+        </div>
+        <div class="flex gap-3">
+            <button onclick="installPWA()" class="btn btn-primary flex-1">Install Now</button>
+            <button onclick="hideInstallBanner()" class="btn btn-secondary">Later</button>
+        </div>
+    </div>
+
+    <!-- Dashboard UI -->
+    <div id="dashboard-ui" class="flex-col">
+        <!-- Header -->
+        <div class="header flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <div style="width: 44px; height: 44px; border-radius: 12px; overflow: hidden; border: 2px solid var(--primary);">
+                    <img src="https://raw.githubusercontent.com/du-modz/File-Blogger-Website-DUModZ/refs/heads/main/Img/dumodz-logo.webp" 
+                         class="w-full h-full object-cover">
+                </div>
+                <div>
+                    <h2 id="admin-label" class="font-bold text-lg">DARK UNKNOWN MODE</h2>
                     <div class="status-badge">
                         <i class="fas fa-circle" style="font-size: 8px;"></i> Online
                     </div>
                 </div>
             </div>
             
-            <div class="desktop-nav flex items-center gap-3">
+            <div class="desktop-nav">
+                <button onclick="showTab('home')" class="btn btn-secondary" style="padding: 8px 16px;">
+                    <i class="fas fa-home mr-2"></i> Home
+                </button>
+                <button onclick="showTab('settings')" class="btn btn-secondary" style="padding: 8px 16px;">
+                    <i class="fas fa-cog mr-2"></i> Settings
+                </button>
+                <button onclick="showTab('profile')" class="btn btn-secondary" style="padding: 8px 16px;">
+                    <i class="fas fa-user mr-2"></i> Profile
+                </button>
                 <button onclick="toggleTheme()" class="btn btn-secondary" style="padding: 8px 12px;">
                     <i class="fas fa-moon" id="theme-icon"></i>
-                </button>
-                <button onclick="handleLogout()" class="btn btn-danger" style="padding: 8px 12px;">
-                    <i class="fas fa-power-off"></i>
                 </button>
             </div>
         </div>
 
-        <!-- Main Content -->
+        <!-- Main Content with Tabs -->
         <div class="main-content">
-            <!-- System Configuration -->
-            <div class="card fade-in">
-                <div class="flex items-center gap-3 mb-4">
-                    <div style="width: 40px; height: 40px; border-radius: 10px; background: rgba(79, 70, 229, 0.1); display: flex; align-items: center; justify-content: center;">
-                        <i class="fas fa-cog" style="color: var(--primary);"></i>
-                    </div>
-                    <h3 class="text-lg font-bold">System Configuration</h3>
-                </div>
-                
-                <div class="config-grid">
-                    <div class="input-group">
-                        <label class="input-label">ADMIN LABEL</label>
-                        <input type="text" id="config-label" class="input-field" placeholder="DUModZ Admin">
-                    </div>
-                    
-                    <div class="input-group">
-                        <label class="input-label">CONTACT URL</label>
-                        <input type="url" id="config-url" class="input-field" placeholder="https://dumodz.com/contact">
+            <!-- Home Tab -->
+            <div id="home-tab" class="tab-content active">
+                <!-- System Configuration -->
+                <div class="card slide-up mb-6">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div style="width: 48px; height: 48px; border-radius: 12px; background: rgba(79, 70, 229, 0.1); display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-cog" style="color: var(--primary); font-size: 20px;"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold">System Configuration</h3>
+                            <p style="color: var(--text-secondary); font-size: 14px;">Manage global system settings</p>
+                        </div>
                     </div>
                     
-                    <div class="input-group" style="grid-column: span 2;">
-                        <label class="input-label">GLOBAL BLOCKLIST</label>
-                        <textarea id="config-blocklist" class="input-field" rows="3" placeholder="Enter blocklist (one per line)"></textarea>
+                    <div class="grid-2">
+                        <div class="input-group">
+                            <label class="input-label">ADMIN LABEL</label>
+                            <input type="text" id="config-label" class="input-field" placeholder="DARK UNKNOWN MODE">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="input-label">CONTACT URL</label>
+                            <input type="url" id="config-url" class="input-field" placeholder="https://dumodz.com/contact">
+                        </div>
+                        
+                        <div class="input-group" style="grid-column: span 2;">
+                            <label class="input-label">GLOBAL BLOCKLIST</label>
+                            <textarea id="config-blocklist" class="input-field textarea-field" placeholder="Enter blocklist (one per line)"></textarea>
+                        </div>
+                    </div>
+                    
+                    <button onclick="updateGlobalConfig()" class="btn btn-primary w-full mt-4">
+                        <i class="fas fa-save mr-2"></i> Save Configuration
+                    </button>
+                </div>
+
+                <!-- Apps Section -->
+                <div class="flex items-center justify-between mb-6">
+                    <div>
+                        <h3 class="text-lg font-bold">Authorized Applications</h3>
+                        <p style="color: var(--text-secondary); font-size: 14px;">Manage your verified applications</p>
+                    </div>
+                    <button onclick="openAddAppModal()" class="btn btn-primary">
+                        <i class="fas fa-plus mr-2"></i> Add App
+                    </button>
+                </div>
+
+                <!-- Apps Container -->
+                <div id="apps-container" class="apps-grid">
+                    <!-- Apps will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div id="settings-tab" class="tab-content">
+                <div class="card slide-up mb-6">
+                    <div class="settings-section">
+                        <h3><i class="fas fa-user-shield"></i> Account Settings</h3>
+                        <div class="input-group">
+                            <label class="input-label">Admin Email</label>
+                            <input type="email" id="settings-email" class="input-field" placeholder="admin@dumodz.com">
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Change Password</label>
+                            <input type="password" id="settings-password" class="input-field" placeholder="Enter new password">
+                        </div>
+                        <button class="btn btn-primary w-full">
+                            <i class="fas fa-save mr-2"></i> Update Account
+                        </button>
+                    </div>
+
+                    <div class="settings-section">
+                        <h3><i class="fas fa-bell"></i> Notifications</h3>
+                        <div class="flex items-center justify-between mb-3">
+                            <span style="color: var(--text);">Email Notifications</span>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" class="sr-only peer" checked>
+                                <div class="w-12 h-6 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-6 after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                            </label>
+                        </div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span style="color: var(--text);">App Alerts</span>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" class="sr-only peer" checked>
+                                <div class="w-12 h-6 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-6 after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <h3><i class="fas fa-database"></i> Data Management</h3>
+                        <button onclick="exportData()" class="btn btn-secondary w-full mb-3">
+                            <i class="fas fa-download mr-2"></i> Export Data
+                        </button>
+                        <button onclick="clearLocalData()" class="btn btn-danger w-full">
+                            <i class="fas fa-trash mr-2"></i> Clear Local Data
+                        </button>
                     </div>
                 </div>
-                
-                <button onclick="updateGlobalConfig()" class="btn btn-primary w-full mt-4">
-                    <i class="fas fa-save"></i> Save Configuration
-                </button>
             </div>
 
-            <!-- Apps Header -->
-            <div class="flex items-center justify-between mb-4 mt-8">
-                <h3 class="text-lg font-bold">Authorized Applications</h3>
-                <button onclick="openAddAppModal()" class="btn btn-primary">
-                    <i class="fas fa-plus"></i> Add App
-                </button>
-            </div>
+            <!-- Profile Tab -->
+            <div id="profile-tab" class="tab-content">
+                <div class="card slide-up">
+                    <div class="profile-header">
+                        <div class="profile-avatar">
+                            <img src="https://raw.githubusercontent.com/du-modz/File-Blogger-Website-DUModZ/refs/heads/main/Img/dumodz-logo.webp" alt="Profile">
+                        </div>
+                        <h3 class="text-lg font-bold" id="profile-name">DARK UNKNOWN MODE</h3>
+                        <p style="color: var(--text-secondary); font-size: 14px;">Administrator</p>
+                    </div>
 
-            <!-- Apps Container -->
-            <div id="apps-container" class="apps-grid">
-                <!-- Apps will be loaded here -->
+                    <div class="settings-section">
+                        <h3><i class="fas fa-info-circle"></i> Profile Information</h3>
+                        <div class="input-group">
+                            <label class="input-label">Display Name</label>
+                            <input type="text" id="profile-display-name" class="input-field" value="DARK UNKNOWN MODE">
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Email Address</label>
+                            <input type="email" class="input-field" value="dumodz.info@gmail.com" disabled>
+                        </div>
+                        <button class="btn btn-primary w-full">
+                            <i class="fas fa-save mr-2"></i> Update Profile
+                        </button>
+                    </div>
+
+                    <div class="settings-section">
+                        <h3><i class="fas fa-shield-alt"></i> Security</h3>
+                        <div class="flex items-center justify-between mb-4">
+                            <div>
+                                <p style="color: var(--text); font-weight: 600;">Last Login</p>
+                                <p style="color: var(--text-secondary); font-size: 12px;" id="last-login">Just now</p>
+                            </div>
+                            <span class="badge badge-success">
+                                <i class="fas fa-check-circle"></i> Active
+                            </span>
+                        </div>
+                        <button onclick="handleLogout()" class="btn btn-danger w-full">
+                            <i class="fas fa-power-off mr-2"></i> Logout
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
 
         <!-- Mobile Navigation -->
-        <div class="bottom-nav mobile-only">
-            <button class="nav-btn active">
+        <div class="mobile-nav">
+            <button onclick="showTab('home')" class="nav-item active" id="nav-home">
                 <i class="fas fa-home"></i>
-                <span>Home</span>
+                <span class="nav-label">Home</span>
             </button>
-            <button class="nav-btn">
+            <button onclick="showTab('settings')" class="nav-item" id="nav-settings">
                 <i class="fas fa-cog"></i>
-                <span>Settings</span>
+                <span class="nav-label">Settings</span>
             </button>
-            <button onclick="openAddAppModal()" class="nav-btn">
+            <button onclick="openAddAppModal()" class="nav-add-btn">
                 <i class="fas fa-plus"></i>
-                <span>Add</span>
             </button>
-            <button onclick="toggleTheme()" class="nav-btn">
-                <i class="fas fa-moon" id="mobile-theme-icon"></i>
-                <span>Theme</span>
-            </button>
-            <button class="nav-btn">
+            <button onclick="showTab('profile')" class="nav-item" id="nav-profile">
                 <i class="fas fa-user"></i>
-                <span>Profile</span>
+                <span class="nav-label">Profile</span>
+            </button>
+            <button onclick="toggleTheme()" class="nav-item" id="nav-theme">
+                <i class="fas fa-moon"></i>
+                <span class="nav-label">Theme</span>
             </button>
         </div>
 
-        <!-- Floating Action Button (Mobile) -->
-        <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="fab-btn mobile-only">
+        <!-- Floating Action Button -->
+        <button onclick="scrollToTop()" class="fab-btn mobile-only">
             <i class="fas fa-arrow-up"></i>
         </button>
     </div>
@@ -701,12 +1082,36 @@
         const PATH = "verify-sha256-data-dumodz";
         let firebaseData = null;
         let deferredPrompt = null;
+        let currentUser = null;
+        let loginRemembered = false;
 
         // Initialize App
         async function initializeAppSystem() {
-            console.log("Initializing app...");
+            console.log("Initializing DUModZ Admin...");
             
             // Simulate loading progress
+            simulateLoading();
+            
+            // Check for saved login
+            checkSavedLogin();
+            
+            // Register Service Worker for PWA
+            registerServiceWorker();
+            
+            // Setup PWA installation
+            setupPWAInstallation();
+            
+            // Load saved theme
+            loadTheme();
+            
+            // Setup authentication listener
+            setupAuthListener();
+            
+            // Setup event listeners
+            setupEventListeners();
+        }
+
+        function simulateLoading() {
             let progress = 0;
             const progressInterval = setInterval(() => {
                 progress += 5;
@@ -714,192 +1119,195 @@
                 
                 if (progress >= 100) {
                     clearInterval(progressInterval);
-                    showLoginUI();
+                    // Check if we have saved login
+                    const savedLogin = localStorage.getItem('duadmin_saved_login');
+                    if (savedLogin === 'true') {
+                        // Auto login will be handled by auth listener
+                        console.log("Saved login found, attempting auto login...");
+                    }
                 }
             }, 100);
+        }
+
+        function checkSavedLogin() {
+            const savedLogin = localStorage.getItem('duadmin_saved_login');
+            const savedEmail = localStorage.getItem('duadmin_email');
             
-            // Register Service Worker for PWA
+            if (savedLogin === 'true' && savedEmail) {
+                loginRemembered = true;
+                document.getElementById('login-email').value = savedEmail;
+                document.getElementById('remember-me').checked = true;
+            }
+        }
+
+        async function registerServiceWorker() {
             if ('serviceWorker' in navigator) {
                 try {
-                    const registration = await navigator.worker.register('/service-worker.js');
-                    console.log('Service Worker registered:', registration);
+                    await navigator.serviceWorker.register('/sw.js');
+                    console.log('Service Worker registered successfully');
                 } catch (error) {
                     console.log('Service Worker registration failed:', error);
                 }
             }
-            
-            // PWA Installation Prompt
+        }
+
+        function setupPWAInstallation() {
             window.addEventListener('beforeinstallprompt', (e) => {
                 e.preventDefault();
                 deferredPrompt = e;
-                showInstallPrompt();
+                
+                // Show install button after 3 seconds
+                setTimeout(() => {
+                    if (deferredPrompt) {
+                        document.getElementById('install-button').classList.remove('hidden');
+                    }
+                }, 3000);
+                
+                // Also show banner after 5 seconds
+                setTimeout(() => {
+                    if (deferredPrompt && !isAppInstalled()) {
+                        showInstallBanner();
+                    }
+                }, 5000);
             });
             
-            // Load saved theme
-            loadTheme();
-            
-            // Check authentication state
+            // Check if app is already installed
+            if (isAppInstalled()) {
+                console.log("App is already installed");
+            }
+        }
+
+        function isAppInstalled() {
+            return window.matchMedia('(display-mode: standalone)').matches || 
+                   window.navigator.standalone ||
+                   document.referrer.includes('android-app://');
+        }
+
+        function setupAuthListener() {
             onAuthStateChanged(auth, (user) => {
                 if (user) {
-                    console.log("User is authenticated:", user.email);
+                    console.log("User authenticated:", user.email);
+                    currentUser = user;
+                    
+                    // Update last login time
+                    updateLastLoginTime();
+                    
+                    // Save login if remember me is checked
+                    if (loginRemembered) {
+                        localStorage.setItem('duadmin_saved_login', 'true');
+                        localStorage.setItem('duadmin_email', user.email);
+                    }
+                    
+                    // Load dashboard data and show UI
                     loadDashboardData();
                     showDashboardUI();
+                    showTab('home');
+                    
                 } else {
                     console.log("No user authenticated");
+                    currentUser = null;
+                    
+                    // Clear saved login if not remembered
+                    if (!loginRemembered) {
+                        localStorage.removeItem('duadmin_saved_login');
+                        localStorage.removeItem('duadmin_email');
+                    }
+                    
                     showLoginUI();
+                }
+            });
+        }
+
+        function setupEventListeners() {
+            // Remember me checkbox
+            document.getElementById('remember-me').addEventListener('change', function(e) {
+                loginRemembered = e.target.checked;
+            });
+            
+            // Auto-focus on email field
+            document.getElementById('login-email').focus();
+            
+            // Enter key to login
+            document.getElementById('login-password').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    handleLogin();
                 }
             });
         }
 
         // UI Management Functions
         function showLoginUI() {
-            document.getElementById('splash-screen').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('splash-screen').style.display = 'none';
-                document.getElementById('login-ui').style.display = 'flex';
-                setTimeout(() => {
-                    document.getElementById('login-ui').classList.add('fade-in');
-                }, 50);
-            }, 500);
+            gsap.to("#splash-screen", {
+                opacity: 0,
+                duration: 0.5,
+                onComplete: () => {
+                    document.getElementById('splash-screen').style.display = 'none';
+                    document.getElementById('login-ui').style.display = 'flex';
+                    gsap.from("#login-ui .login-card", {
+                        opacity: 0,
+                        y: 30,
+                        duration: 0.6,
+                        ease: "back.out(1.7)"
+                    });
+                }
+            });
         }
 
         function showDashboardUI() {
             document.getElementById('splash-screen').style.display = 'none';
             document.getElementById('login-ui').style.display = 'none';
             document.getElementById('dashboard-ui').style.display = 'flex';
-        }
-
-        function loadDashboardData() {
-            console.log("Loading dashboard data...");
             
-            const dataRef = ref(database, PATH);
-            
-            onValue(dataRef, (snapshot) => {
-                firebaseData = snapshot.val();
-                
-                if (firebaseData) {
-                    console.log("Data loaded successfully:", firebaseData);
-                    updateUIWithData(firebaseData);
-                } else {
-                    console.log("No data found in Firebase");
-                    // Initialize with default data
-                    firebaseData = {
-                        admin_label: "DUModZ Admin",
-                        contact_url: "",
-                        global_blocklist: "",
-                        authorized_apps: []
-                    };
-                    updateUIWithData(firebaseData);
-                }
-            }, (error) => {
-                console.error("Error loading data:", error);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Connection Error',
-                    text: 'Failed to load data from server. Please check your connection.',
-                    confirmButtonText: 'Retry'
-                }).then(() => {
-                    loadDashboardData();
+            // Animate content
+            setTimeout(() => {
+                document.querySelectorAll('.slide-up').forEach(el => {
+                    el.style.animation = 'slideUp 0.5s ease-out';
                 });
+            }, 100);
+        }
+
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
             });
-        }
-
-        function updateUIWithData(data) {
-            // Update admin label
-            document.getElementById('admin-label').textContent = data.admin_label || "DUModZ Admin";
-            document.getElementById('config-label').value = data.admin_label || "";
-            document.getElementById('config-url').value = data.contact_url || "";
-            document.getElementById('config-blocklist').value = data.global_blocklist || "";
             
-            // Update apps
-            renderApps(data.authorized_apps || []);
-        }
-
-        function renderApps(apps) {
-            const container = document.getElementById('apps-container');
+            // Show selected tab
+            document.getElementById(`${tabName}-tab`).classList.add('active');
             
-            if (apps.length === 0) {
-                container.innerHTML = `
-                    <div class="card text-center" style="grid-column: span 2;">
-                        <div class="mb-3">
-                            <i class="fas fa-box-open" style="font-size: 48px; color: var(--text-secondary);"></i>
-                        </div>
-                        <h4 class="font-bold mb-2">No Applications Found</h4>
-                        <p class="text-secondary" style="color: var(--text-secondary); margin-bottom: 16px;">
-                            Click "Add App" to add your first authorized application
-                        </p>
-                        <button onclick="openAddAppModal()" class="btn btn-primary">
-                            <i class="fas fa-plus"></i> Add Your First App
-                        </button>
-                    </div>
-                `;
-                return;
+            // Update mobile nav active state
+            document.querySelectorAll('.nav-item').forEach(nav => {
+                nav.classList.remove('active');
+            });
+            
+            // Update desktop nav if needed
+            if (tabName === 'home') {
+                document.getElementById('nav-home').classList.add('active');
+            } else if (tabName === 'settings') {
+                document.getElementById('nav-settings').classList.add('active');
+            } else if (tabName === 'profile') {
+                document.getElementById('nav-profile').classList.add('active');
             }
             
-            container.innerHTML = '';
-            
-            apps.forEach((app, index) => {
-                const appCard = document.createElement('div');
-                appCard.className = 'card app-card slide-in';
-                appCard.style.animationDelay = (index * 0.1) + 's';
-                
-                appCard.innerHTML = `
-                    <div class="flex items-center justify-between mb-3">
-                        <div class="flex items-center gap-3">
-                            <div style="width: 40px; height: 40px; border-radius: 10px; background: rgba(79, 70, 229, 0.1); display: flex; align-items: center; justify-content: center;">
-                                <i class="fas fa-mobile-alt" style="color: var(--primary);"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-bold">${app.note || 'Unnamed App'}</h4>
-                                <p class="text-secondary" style="color: var(--text-secondary); font-size: 12px;">
-                                    ${app.package_name || 'No package name'}
-                                </p>
-                            </div>
-                        </div>
-                        <div class="flex gap-2">
-                            <button onclick="editApp(${index})" class="btn btn-secondary" style="padding: 6px 10px;">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button onclick="deleteApp(${index})" class="btn btn-danger" style="padding: 6px 10px;">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="sha-badge">
-                        <div class="flex items-center justify-between mb-1">
-                            <span class="font-semibold">SHA256 KEY:</span>
-                            <i class="fas fa-copy" onclick="copyToClipboard('${app.sha256_key || ''}')" style="cursor: pointer;"></i>
-                        </div>
-                        <code style="font-size: 11px; word-break: break-all;">${app.sha256_key || 'No SHA256 key'}</code>
-                    </div>
-                    
-                    <div class="flex items-center justify-between mt-3">
-                        <div class="flex items-center gap-2">
-                            <i class="fas fa-shield-alt" style="color: ${app.package_blocklist ? 'var(--danger)' : 'var(--success)'};"></i>
-                            <span class="font-semibold">Blocklist:</span>
-                        </div>
-                        <span style="color: ${app.package_blocklist ? 'var(--danger)' : 'var(--success)'}; font-weight: 600;">
-                            ${app.package_blocklist || 'None'}
-                        </span>
-                    </div>
-                `;
-                
-                container.appendChild(appCard);
-            });
+            // Update profile info
+            if (tabName === 'profile' && currentUser) {
+                updateProfileInfo();
+            }
         }
 
         // Authentication Functions
         async function handleLogin() {
             const email = document.getElementById('login-email').value;
             const password = document.getElementById('login-password').value;
+            const rememberMe = document.getElementById('remember-me').checked;
             
             if (!email || !password) {
                 Swal.fire({
                     icon: 'warning',
                     title: 'Missing Information',
                     text: 'Please enter both email and password',
-                    confirmButtonText: 'OK'
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: 'var(--primary)'
                 });
                 return;
             }
@@ -908,16 +1316,24 @@
                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
                 console.log("Login successful:", userCredential.user.email);
                 
+                // Save login if remember me is checked
+                if (rememberMe) {
+                    localStorage.setItem('duadmin_saved_login', 'true');
+                    localStorage.setItem('duadmin_email', email);
+                    loginRemembered = true;
+                } else {
+                    loginRemembered = false;
+                }
+                
                 Swal.fire({
                     icon: 'success',
-                    title: 'Login Successful',
-                    text: 'Welcome to DUModZ Admin Panel',
+                    title: 'Welcome Back!',
+                    text: 'Successfully logged in to DUModZ Admin',
                     timer: 1500,
-                    showConfirmButton: false
+                    showConfirmButton: false,
+                    background: 'var(--surface)',
+                    color: 'var(--text)'
                 });
-                
-                showDashboardUI();
-                loadDashboardData();
                 
             } catch (error) {
                 console.error("Login error:", error);
@@ -926,14 +1342,19 @@
                 if (error.code === 'auth/invalid-credential') {
                     errorMessage = 'Invalid email or password.';
                 } else if (error.code === 'auth/network-request-failed') {
-                    errorMessage = 'Network error. Please check your connection.';
+                    errorMessage = 'Network error. Please check your internet connection.';
+                } else if (error.code === 'auth/too-many-requests') {
+                    errorMessage = 'Too many failed attempts. Please try again later.';
                 }
                 
                 Swal.fire({
                     icon: 'error',
                     title: 'Login Failed',
                     text: errorMessage,
-                    confirmButtonText: 'Try Again'
+                    confirmButtonText: 'Try Again',
+                    confirmButtonColor: 'var(--primary)',
+                    background: 'var(--surface)',
+                    color: 'var(--text)'
                 });
             }
         }
@@ -945,21 +1366,31 @@
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonText: 'Yes, Logout',
-                cancelButtonText: 'Cancel'
+                cancelButtonText: 'Cancel',
+                confirmButtonColor: 'var(--danger)',
+                cancelButtonColor: 'var(--text-secondary)',
+                background: 'var(--surface)',
+                color: 'var(--text)'
             });
             
             if (result.isConfirmed) {
                 try {
+                    // Clear remembered login
+                    loginRemembered = false;
+                    localStorage.removeItem('duadmin_saved_login');
+                    localStorage.removeItem('duadmin_email');
+                    
                     await signOut(auth);
+                    
                     Swal.fire({
                         icon: 'success',
                         title: 'Logged Out',
                         text: 'You have been successfully logged out',
                         timer: 1500,
-                        showConfirmButton: false
+                        showConfirmButton: false,
+                        background: 'var(--surface)',
+                        color: 'var(--text)'
                     });
-                    
-                    showLoginUI();
                     
                 } catch (error) {
                     console.error("Logout error:", error);
@@ -967,17 +1398,187 @@
                         icon: 'error',
                         title: 'Logout Failed',
                         text: 'An error occurred during logout',
-                        confirmButtonText: 'OK'
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: 'var(--primary)',
+                        background: 'var(--surface)',
+                        color: 'var(--text)'
                     });
                 }
             }
         }
 
+        function updateLastLoginTime() {
+            const now = new Date();
+            const options = { 
+                weekday: 'short', 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            };
+            const lastLogin = now.toLocaleDateString('en-US', options);
+            document.getElementById('last-login').textContent = lastLogin;
+            localStorage.setItem('duadmin_last_login', lastLogin);
+        }
+
+        function updateProfileInfo() {
+            if (currentUser) {
+                document.getElementById('profile-name').textContent = 
+                    firebaseData?.admin_label || "DARK UNKNOWN MODE";
+                document.getElementById('profile-display-name').value = 
+                    firebaseData?.admin_label || "DARK UNKNOWN MODE";
+                
+                // Load saved last login
+                const savedLastLogin = localStorage.getItem('duadmin_last_login');
+                if (savedLastLogin) {
+                    document.getElementById('last-login').textContent = savedLastLogin;
+                }
+            }
+        }
+
         // Data Management Functions
+        function loadDashboardData() {
+            console.log("Loading dashboard data from Firebase...");
+            
+            const dataRef = ref(database, PATH);
+            
+            onValue(dataRef, (snapshot) => {
+                firebaseData = snapshot.val();
+                
+                if (firebaseData) {
+                    console.log("Firebase data loaded successfully");
+                    updateUIWithData(firebaseData);
+                } else {
+                    console.log("No data found in Firebase, creating default structure...");
+                    firebaseData = {
+                        admin_label: "DARK UNKNOWN MODE",
+                        contact_url: "",
+                        global_blocklist: "",
+                        authorized_apps: []
+                    };
+                    updateUIWithData(firebaseData);
+                }
+            }, (error) => {
+                console.error("Error loading Firebase data:", error);
+                showDataError();
+            });
+        }
+
+        function updateUIWithData(data) {
+            // Update admin label
+            const adminLabel = data.admin_label || "DARK UNKNOWN MODE";
+            document.getElementById('admin-label').textContent = adminLabel;
+            document.getElementById('profile-name').textContent = adminLabel;
+            document.getElementById('config-label').value = adminLabel;
+            document.getElementById('profile-display-name').value = adminLabel;
+            
+            // Update other fields
+            document.getElementById('config-url').value = data.contact_url || "";
+            document.getElementById('config-blocklist').value = data.global_blocklist || "";
+            
+            // Update apps
+            renderApps(data.authorized_apps || []);
+        }
+
+        function renderApps(apps) {
+            const container = document.getElementById('apps-container');
+            
+            if (!apps || apps.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full">
+                        <div class="card empty-state">
+                            <i class="fas fa-box-open"></i>
+                            <h4 class="font-bold mb-3">No Applications Found</h4>
+                            <p style="color: var(--text-secondary); margin-bottom: 20px;">
+                                Start by adding your first authorized application
+                            </p>
+                            <button onclick="openAddAppModal()" class="btn btn-primary">
+                                <i class="fas fa-plus mr-2"></i> Add Your First App
+                            </button>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = '';
+            
+            apps.forEach((app, index) => {
+                const appCard = document.createElement('div');
+                appCard.className = 'app-card card fade-in';
+                
+                appCard.innerHTML = `
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <div style="width: 44px; height: 44px; border-radius: 12px; background: rgba(79, 70, 229, 0.1); display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-mobile-alt" style="color: var(--primary); font-size: 18px;"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold">${escapeHtml(app.note || 'Unnamed App')}</h4>
+                                <p style="color: var(--text-secondary); font-size: 13px; font-family: monospace;">
+                                    ${escapeHtml(app.package_name || 'No package')}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="editApp(${index})" class="btn btn-secondary" style="padding: 6px 12px;">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button onclick="deleteApp(${index})" class="btn btn-danger" style="padding: 6px 12px;">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="sha-badge">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="font-semibold" style="font-size: 11px; letter-spacing: 1px;">SHA256 KEY</span>
+                            <i class="fas fa-copy" onclick="copyToClipboard('${escapeHtml(app.sha256_key || '')}')" 
+                               style="cursor: pointer; color: var(--primary);"></i>
+                        </div>
+                        <code style="font-size: 12px; font-family: 'Monaco', 'Menlo', monospace;">
+                            ${escapeHtml(app.sha256_key || 'No SHA256 key')}
+                        </code>
+                    </div>
+                    
+                    <div class="flex items-center justify-between mt-4">
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-ban" style="color: ${app.package_blocklist ? 'var(--danger)' : 'var(--success)'};"></i>
+                            <span class="font-semibold" style="font-size: 14px;">Blocklist:</span>
+                        </div>
+                        <span style="color: ${app.package_blocklist ? 'var(--danger)' : 'var(--success)'}; 
+                              font-weight: 700; font-size: 14px;">
+                            ${app.package_blocklist ? escapeHtml(app.package_blocklist) : 'None'}
+                        </span>
+                    </div>
+                `;
+                
+                container.appendChild(appCard);
+            });
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
         async function updateGlobalConfig() {
-            const adminLabel = document.getElementById('config-label').value;
-            const contactUrl = document.getElementById('config-url').value;
-            const blocklist = document.getElementById('config-blocklist').value;
+            const adminLabel = document.getElementById('config-label').value.trim();
+            const contactUrl = document.getElementById('config-url').value.trim();
+            const blocklist = document.getElementById('config-blocklist').value.trim();
+            
+            if (!adminLabel) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Admin Label Required',
+                    text: 'Please enter an admin label',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: 'var(--primary)'
+                });
+                return;
+            }
             
             const updates = {
                 admin_label: adminLabel,
@@ -991,21 +1592,25 @@
                 Swal.fire({
                     icon: 'success',
                     title: 'Configuration Saved',
-                    text: 'System configuration has been updated successfully',
+                    text: 'System configuration has been updated',
                     timer: 1500,
-                    showConfirmButton: false
+                    showConfirmButton: false,
+                    background: 'var(--surface)',
+                    color: 'var(--text)'
                 });
                 
-                // Update admin label display
+                // Update UI
                 document.getElementById('admin-label').textContent = adminLabel;
+                document.getElementById('profile-name').textContent = adminLabel;
                 
             } catch (error) {
                 console.error("Update error:", error);
                 Swal.fire({
                     icon: 'error',
                     title: 'Save Failed',
-                    text: 'Failed to save configuration. Please try again.',
-                    confirmButtonText: 'OK'
+                    text: 'Failed to save configuration',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: 'var(--primary)'
                 });
             }
         }
@@ -1014,36 +1619,51 @@
             const { value: formData } = await Swal.fire({
                 title: 'Add New Application',
                 html: `
-                    <div class="input-group">
-                        <label class="input-label">Application Name</label>
-                        <input id="swal-note" class="input-field" placeholder="My App">
-                    </div>
-                    <div class="input-group">
-                        <label class="input-label">Package Name</label>
-                        <input id="swal-package" class="input-field" placeholder="com.example.app">
-                    </div>
-                    <div class="input-group">
-                        <label class="input-label">SHA256 Key</label>
-                        <input id="swal-sha256" class="input-field" placeholder="Enter SHA256 key">
-                    </div>
-                    <div class="input-group">
-                        <label class="input-label">Blocklist (Optional)</label>
-                        <input id="swal-blocklist" class="input-field" placeholder="Enter blocklist">
+                    <div class="text-left">
+                        <div class="mb-4">
+                            <label style="color: var(--text-secondary); font-size: 14px; font-weight: 600; display: block; margin-bottom: 8px;">
+                                Application Name
+                            </label>
+                            <input id="swal-note" class="input-field" placeholder="My App" style="margin-bottom: 0;">
+                        </div>
+                        <div class="mb-4">
+                            <label style="color: var(--text-secondary); font-size: 14px; font-weight: 600; display: block; margin-bottom: 8px;">
+                                Package Name
+                            </label>
+                            <input id="swal-package" class="input-field" placeholder="com.example.app" style="margin-bottom: 0;">
+                        </div>
+                        <div class="mb-4">
+                            <label style="color: var(--text-secondary); font-size: 14px; font-weight: 600; display: block; margin-bottom: 8px;">
+                                SHA256 Key
+                            </label>
+                            <input id="swal-sha256" class="input-field" placeholder="Enter SHA256 key" style="margin-bottom: 0;">
+                        </div>
+                        <div class="mb-4">
+                            <label style="color: var(--text-secondary); font-size: 14px; font-weight: 600; display: block; margin-bottom: 8px;">
+                                Blocklist (Optional)
+                            </label>
+                            <input id="swal-blocklist" class="input-field" placeholder="Enter blocklist" style="margin-bottom: 0;">
+                        </div>
                     </div>
                 `,
                 showCancelButton: true,
                 confirmButtonText: 'Add Application',
                 cancelButtonText: 'Cancel',
+                confirmButtonColor: 'var(--primary)',
+                cancelButtonColor: 'var(--text-secondary)',
+                background: 'var(--surface)',
+                color: 'var(--text)',
+                width: '90%',
+                maxWidth: '500px',
                 didOpen: () => {
-                    // Focus on first input
                     document.getElementById('swal-note').focus();
                 },
                 preConfirm: () => {
                     return {
-                        note: document.getElementById('swal-note').value,
-                        package_name: document.getElementById('swal-package').value,
-                        sha256_key: document.getElementById('swal-sha256').value,
-                        package_blocklist: document.getElementById('swal-blocklist').value || ''
+                        note: document.getElementById('swal-note').value.trim(),
+                        package_name: document.getElementById('swal-package').value.trim(),
+                        sha256_key: document.getElementById('swal-sha256').value.trim(),
+                        package_blocklist: document.getElementById('swal-blocklist').value.trim() || ''
                     };
                 }
             });
@@ -1059,13 +1679,14 @@
                     icon: 'warning',
                     title: 'Missing Information',
                     text: 'Please fill all required fields',
-                    confirmButtonText: 'OK'
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: 'var(--primary)'
                 });
                 return;
             }
             
             try {
-                const currentApps = firebaseData.authorized_apps || [];
+                const currentApps = firebaseData?.authorized_apps || [];
                 const updatedApps = [...currentApps, appData];
                 
                 await update(ref(database, PATH), {
@@ -1075,9 +1696,11 @@
                 Swal.fire({
                     icon: 'success',
                     title: 'Application Added',
-                    text: 'New application has been added successfully',
+                    text: 'New application has been added',
                     timer: 1500,
-                    showConfirmButton: false
+                    showConfirmButton: false,
+                    background: 'var(--surface)',
+                    color: 'var(--text)'
                 });
                 
             } catch (error) {
@@ -1085,8 +1708,9 @@
                 Swal.fire({
                     icon: 'error',
                     title: 'Add Failed',
-                    text: 'Failed to add application. Please try again.',
-                    confirmButtonText: 'OK'
+                    text: 'Failed to add application',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: 'var(--primary)'
                 });
             }
         }
@@ -1097,35 +1721,51 @@
             const { value: formData } = await Swal.fire({
                 title: 'Edit Application',
                 html: `
-                    <div class="input-group">
-                        <label class="input-label">Application Name</label>
-                        <input id="swal-note-edit" class="input-field" value="${app.note || ''}" placeholder="My App">
-                    </div>
-                    <div class="input-group">
-                        <label class="input-label">Package Name</label>
-                        <input id="swal-package-edit" class="input-field" value="${app.package_name || ''}" placeholder="com.example.app">
-                    </div>
-                    <div class="input-group">
-                        <label class="input-label">SHA256 Key</label>
-                        <input id="swal-sha256-edit" class="input-field" value="${app.sha256_key || ''}" placeholder="Enter SHA256 key">
-                    </div>
-                    <div class="input-group">
-                        <label class="input-label">Blocklist (Optional)</label>
-                        <input id="swal-blocklist-edit" class="input-field" value="${app.package_blocklist || ''}" placeholder="Enter blocklist">
+                    <div class="text-left">
+                        <div class="mb-4">
+                            <label style="color: var(--text-secondary); font-size: 14px; font-weight: 600; display: block; margin-bottom: 8px;">
+                                Application Name
+                            </label>
+                            <input id="swal-note-edit" class="input-field" value="${escapeHtml(app.note || '')}" placeholder="My App">
+                        </div>
+                        <div class="mb-4">
+                            <label style="color: var(--text-secondary); font-size: 14px; font-weight: 600; display: block; margin-bottom: 8px;">
+                                Package Name
+                            </label>
+                            <input id="swal-package-edit" class="input-field" value="${escapeHtml(app.package_name || '')}" placeholder="com.example.app">
+                        </div>
+                        <div class="mb-4">
+                            <label style="color: var(--text-secondary); font-size: 14px; font-weight: 600; display: block; margin-bottom: 8px;">
+                                SHA256 Key
+                            </label>
+                            <input id="swal-sha256-edit" class="input-field" value="${escapeHtml(app.sha256_key || '')}" placeholder="Enter SHA256 key">
+                        </div>
+                        <div class="mb-4">
+                            <label style="color: var(--text-secondary); font-size: 14px; font-weight: 600; display: block; margin-bottom: 8px;">
+                                Blocklist (Optional)
+                            </label>
+                            <input id="swal-blocklist-edit" class="input-field" value="${escapeHtml(app.package_blocklist || '')}" placeholder="Enter blocklist">
+                        </div>
                     </div>
                 `,
                 showCancelButton: true,
                 confirmButtonText: 'Save Changes',
                 cancelButtonText: 'Cancel',
+                confirmButtonColor: 'var(--primary)',
+                cancelButtonColor: 'var(--text-secondary)',
+                background: 'var(--surface)',
+                color: 'var(--text)',
+                width: '90%',
+                maxWidth: '500px',
                 didOpen: () => {
                     document.getElementById('swal-note-edit').focus();
                 },
                 preConfirm: () => {
                     return {
-                        note: document.getElementById('swal-note-edit').value,
-                        package_name: document.getElementById('swal-package-edit').value,
-                        sha256_key: document.getElementById('swal-sha256-edit').value,
-                        package_blocklist: document.getElementById('swal-blocklist-edit').value || ''
+                        note: document.getElementById('swal-note-edit').value.trim(),
+                        package_name: document.getElementById('swal-package-edit').value.trim(),
+                        sha256_key: document.getElementById('swal-sha256-edit').value.trim(),
+                        package_blocklist: document.getElementById('swal-blocklist-edit').value.trim() || ''
                     };
                 }
             });
@@ -1147,9 +1787,11 @@
                 Swal.fire({
                     icon: 'success',
                     title: 'Application Updated',
-                    text: 'Application has been updated successfully',
+                    text: 'Application has been updated',
                     timer: 1500,
-                    showConfirmButton: false
+                    showConfirmButton: false,
+                    background: 'var(--surface)',
+                    color: 'var(--text)'
                 });
                 
             } catch (error) {
@@ -1157,8 +1799,9 @@
                 Swal.fire({
                     icon: 'error',
                     title: 'Update Failed',
-                    text: 'Failed to update application. Please try again.',
-                    confirmButtonText: 'OK'
+                    text: 'Failed to update application',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: 'var(--primary)'
                 });
             }
         }
@@ -1166,12 +1809,15 @@
         async function deleteApp(index) {
             const result = await Swal.fire({
                 title: 'Delete Application?',
-                text: 'This action cannot be undone. Are you sure?',
+                text: 'This action cannot be undone',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonText: 'Yes, Delete',
                 cancelButtonText: 'Cancel',
-                confirmButtonColor: '#EF4444'
+                confirmButtonColor: 'var(--danger)',
+                cancelButtonColor: 'var(--text-secondary)',
+                background: 'var(--surface)',
+                color: 'var(--text)'
             });
             
             if (result.isConfirmed) {
@@ -1185,9 +1831,11 @@
                     Swal.fire({
                         icon: 'success',
                         title: 'Deleted',
-                        text: 'Application has been deleted successfully',
+                        text: 'Application has been deleted',
                         timer: 1500,
-                        showConfirmButton: false
+                        showConfirmButton: false,
+                        background: 'var(--surface)',
+                        color: 'var(--text)'
                     });
                     
                 } catch (error) {
@@ -1195,79 +1843,168 @@
                     Swal.fire({
                         icon: 'error',
                         title: 'Delete Failed',
-                        text: 'Failed to delete application. Please try again.',
-                        confirmButtonText: 'OK'
+                        text: 'Failed to delete application',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: 'var(--primary)'
                     });
                 }
             }
         }
 
+        // PWA Functions
+        function showInstallPrompt() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User accepted install');
+                        document.getElementById('install-button').classList.add('hidden');
+                        hideInstallBanner();
+                    }
+                    deferredPrompt = null;
+                });
+            }
+        }
+
+        async function installPWA() {
+            showInstallPrompt();
+        }
+
+        function showInstallBanner() {
+            document.getElementById('pwa-banner').classList.remove('hidden');
+        }
+
+        function hideInstallBanner() {
+            document.getElementById('pwa-banner').classList.add('hidden');
+        }
+
         // Utility Functions
         function copyToClipboard(text) {
+            if (!text) return;
+            
             navigator.clipboard.writeText(text).then(() => {
                 Swal.fire({
                     icon: 'success',
                     title: 'Copied!',
                     text: 'SHA256 key copied to clipboard',
                     timer: 1000,
-                    showConfirmButton: false
+                    showConfirmButton: false,
+                    background: 'var(--surface)',
+                    color: 'var(--text)'
                 });
+            }).catch(err => {
+                console.error('Copy failed:', err);
             });
         }
 
         function toggleTheme() {
             const isDark = document.body.classList.toggle('dark-mode');
             const themeIcon = document.getElementById('theme-icon');
-            const mobileThemeIcon = document.getElementById('mobile-theme-icon');
+            const navThemeIcon = document.querySelector('#nav-theme i');
             
             if (isDark) {
                 themeIcon.className = 'fas fa-sun';
-                mobileThemeIcon.className = 'fas fa-sun';
-                localStorage.setItem('theme', 'dark');
+                if (navThemeIcon) navThemeIcon.className = 'fas fa-sun';
+                localStorage.setItem('duadmin_theme', 'dark');
             } else {
                 themeIcon.className = 'fas fa-moon';
-                mobileThemeIcon.className = 'fas fa-moon';
-                localStorage.setItem('theme', 'light');
+                if (navThemeIcon) navThemeIcon.className = 'fas fa-moon';
+                localStorage.setItem('duadmin_theme', 'light');
             }
         }
 
         function loadTheme() {
-            const savedTheme = localStorage.getItem('theme');
+            const savedTheme = localStorage.getItem('duadmin_theme');
             const themeIcon = document.getElementById('theme-icon');
-            const mobileThemeIcon = document.getElementById('mobile-theme-icon');
+            const navThemeIcon = document.querySelector('#nav-theme i');
             
             if (savedTheme === 'dark') {
                 document.body.classList.add('dark-mode');
                 themeIcon.className = 'fas fa-sun';
-                mobileThemeIcon.className = 'fas fa-sun';
+                if (navThemeIcon) navThemeIcon.className = 'fas fa-sun';
             } else {
                 document.body.classList.remove('dark-mode');
                 themeIcon.className = 'fas fa-moon';
-                mobileThemeIcon.className = 'fas fa-moon';
+                if (navThemeIcon) navThemeIcon.className = 'fas fa-moon';
             }
         }
 
-        function showInstallPrompt() {
-            if (deferredPrompt) {
-                Swal.fire({
-                    title: 'Install DUModZ Admin',
-                    text: 'Install as app for better experience?',
-                    icon: 'info',
-                    showCancelButton: true,
-                    confirmButtonText: 'Install',
-                    cancelButtonText: 'Later'
-                }).then((result) => {
-                    if (result.isConfirmed && deferredPrompt) {
-                        deferredPrompt.prompt();
-                        deferredPrompt.userChoice.then((choiceResult) => {
-                            if (choiceResult.outcome === 'accepted') {
-                                console.log('User accepted install');
-                            }
-                            deferredPrompt = null;
-                        });
-                    }
-                });
-            }
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        function exportData() {
+            if (!firebaseData) return;
+            
+            const dataStr = JSON.stringify(firebaseData, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `dumodz-backup-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            Swal.fire({
+                icon: 'success',
+                title: 'Data Exported',
+                text: 'All data has been exported successfully',
+                timer: 1500,
+                showConfirmButton: false,
+                background: 'var(--surface)',
+                color: 'var(--text)'
+            });
+        }
+
+        function clearLocalData() {
+            Swal.fire({
+                title: 'Clear All Local Data?',
+                text: 'This will remove all saved settings and login information',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, Clear',
+                cancelButtonText: 'Cancel',
+                confirmButtonColor: 'var(--danger)',
+                background: 'var(--surface)',
+                color: 'var(--text)'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    localStorage.clear();
+                    sessionStorage.clear();
+                    
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Data Cleared',
+                        text: 'All local data has been cleared',
+                        timer: 1500,
+                        showConfirmButton: false,
+                        background: 'var(--surface)',
+                        color: 'var(--text)'
+                    }).then(() => {
+                        location.reload();
+                    });
+                }
+            });
+        }
+
+        function showDataError() {
+            Swal.fire({
+                icon: 'error',
+                title: 'Connection Error',
+                text: 'Cannot connect to database. Please check your internet connection.',
+                confirmButtonText: 'Retry',
+                confirmButtonColor: 'var(--primary)',
+                background: 'var(--surface)',
+                color: 'var(--text)'
+            }).then(() => {
+                loadDashboardData();
+            });
         }
 
         // Make functions available globally
@@ -1279,27 +2016,24 @@
         window.deleteApp = deleteApp;
         window.toggleTheme = toggleTheme;
         window.copyToClipboard = copyToClipboard;
+        window.showTab = showTab;
+        window.scrollToTop = scrollToTop;
+        window.installPWA = installPWA;
+        window.showInstallPrompt = showInstallPrompt;
+        window.hideInstallBanner = hideInstallBanner;
+        window.exportData = exportData;
+        window.clearLocalData = clearLocalData;
 
-        // Initialize the app when page loads
+        // Initialize app
         document.addEventListener('DOMContentLoaded', initializeAppSystem);
 
         // Error handling
         window.addEventListener('error', function(event) {
             console.error('Global error:', event.error);
-            Swal.fire({
-                icon: 'error',
-                title: 'Application Error',
-                text: 'An unexpected error occurred. Please refresh the page.',
-                confirmButtonText: 'Refresh'
-            }).then(() => {
-                location.reload();
-            });
         });
 
-        // Prevent crash on unhandled promise rejection
         window.addEventListener('unhandledrejection', function(event) {
             console.error('Unhandled promise rejection:', event.reason);
-            event.preventDefault();
         });
     </script>
 </body>
