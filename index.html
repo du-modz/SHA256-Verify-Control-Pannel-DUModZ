@@ -467,30 +467,42 @@
         }
 
         /* Floating Action Button */
-        .fab-btn {
-            position: fixed;
-            bottom: 100px;
-            right: 20px;
-            width: 56px;
-            height: 56px;
-            border-radius: 18px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
-            color: white;
-            border: none;
-            font-size: 22px;
-            cursor: pointer;
-            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4);
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 98;
-        }
+.fab-btn {
+    position: fixed;
+    bottom: 100px;
+    right: 20px;
+    width: 56px;
+    height: 56px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    color: white;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+    box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;          /* 🔥 important */
+    pointer-events: auto;  /* 🔥 important */
+    touch-action: manipulation;
+}
 
-        .fab-btn:hover {
-            transform: scale(1.1) rotate(10deg);
-            box-shadow: 0 12px 30px rgba(79, 70, 229, 0.5);
-        }
+/* Hover only for desktop */
+@media (hover: hover) {
+    .fab-btn:hover {
+        transform: scale(1.1) rotate(10deg);
+        box-shadow: 0 12px 30px rgba(79, 70, 229, 0.5);
+    }
+}
+
+/* Mobile only */
+@media (min-width: 769px) {
+    .mobile-only {
+        display: none;
+    }
+}
+
 
         /* Grid Layout */
         .grid-2 {
@@ -1129,9 +1141,14 @@
         </div>
 
         <!-- Floating Action Button -->
-        <button onclick="scrollToTop()" class="fab-btn mobile-only">
-            <i class="fas fa-arrow-up"></i>
-        </button>
+<button
+    type="button"
+    onclick="scrollToTop()"
+    class="fab-btn mobile-only"
+    aria-label="Scroll to top">
+    <i class="fas fa-arrow-up"></i>
+</button>
+
     </div>
 
     <!-- JavaScript -->
@@ -2024,11 +2041,17 @@
         }
 
         function scrollToTop() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        }
+    document.documentElement.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+
+    document.body.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}
+
 
         function exportData() {
             if (!firebaseData) return;
