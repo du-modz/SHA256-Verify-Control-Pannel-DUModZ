@@ -571,18 +571,26 @@
         }
 
         /* Utility Classes */
-/* Header layout safety */
+/* Card */
+.app-card {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 16px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Header safety */
 .app-header {
     gap: 12px;
 }
 
-/* Left side */
 .app-left {
     min-width: 0;
     flex: 1;
 }
 
-/* Icon stays fixed */
+/* Fixed icon */
 .app-icon {
     width: 44px;
     height: 44px;
@@ -599,7 +607,7 @@
     font-size: 18px;
 }
 
-/* Text control */
+/* Text overflow control */
 .app-text {
     min-width: 0;
     flex: 1;
@@ -607,9 +615,9 @@
 
 .app-name,
 .app-package {
-    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .app-package {
@@ -618,17 +626,54 @@
     font-family: monospace;
 }
 
-/* Actions stay fixed */
+/* Actions fixed */
 .app-actions {
     flex-shrink: 0;
 }
 
-.app-actions button {
-    padding: 6px 12px;
+/* SHA */
+.sha-badge {
+    background: rgba(0,0,0,0.25);
+    padding: 12px;
+    border-radius: 12px;
 }
 
-/* -------- Mobile (<=768px) -------- */
+.sha-label {
+    font-size: 11px;
+    letter-spacing: 1px;
+}
+
+.sha-copy {
+    cursor: pointer;
+    color: var(--primary);
+}
+
+.sha-code {
+    font-size: 12px;
+    font-family: Monaco, Menlo, monospace;
+    word-break: break-all;
+    display: block;
+}
+
+/* Blocklist */
+.block-row {
+    gap: 12px;
+}
+
+.block-value {
+    font-weight: 700;
+    font-size: 14px;
+    max-width: 60%;
+    text-align: right;
+    word-break: break-word;
+}
+
+.danger { color: var(--danger); }
+.success { color: var(--success); }
+
+/* ---------- Mobile ---------- */
 @media (max-width: 768px) {
+
     .app-header {
         flex-direction: column;
         align-items: stretch;
@@ -643,6 +688,16 @@
     .app-package {
         white-space: normal;
         word-break: break-word;
+    }
+
+    .block-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .block-value {
+        max-width: 100%;
+        text-align: left;
     }
 }
 
@@ -1533,31 +1588,64 @@
                 appCard.className = 'app-card card fade-in';
                 
                 appCard.innerHTML = `
-                    <div class="flex items-center justify-between mb-4 app-header">
-    <div class="flex items-center gap-3 app-left">
-        <div class="app-icon">
-            <i class="fas fa-mobile-alt"></i>
+                    <div class="app-card">
+
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-4 app-header">
+        <div class="flex items-center gap-3 app-left">
+            <div class="app-icon">
+                <i class="fas fa-mobile-alt"></i>
+            </div>
+
+            <div class="app-text">
+                <h4 class="font-bold app-name">
+                    ${escapeHtml(app.note || 'Unnamed App')}
+                </h4>
+                <p class="app-package">
+                    ${escapeHtml(app.package_name || 'No package')}
+                </p>
+            </div>
         </div>
 
-        <div class="app-text">
-            <h4 class="font-bold app-name">
-                ${escapeHtml(app.note || 'Unnamed App')}
-            </h4>
-            <p class="app-package">
-                ${escapeHtml(app.package_name || 'No package')}
-            </p>
+        <div class="flex gap-2 app-actions">
+            <button onclick="editApp(${index})" class="btn btn-secondary">
+                <i class="fas fa-edit"></i>
+            </button>
+            <button onclick="deleteApp(${index})" class="btn btn-danger">
+                <i class="fas fa-trash"></i>
+            </button>
         </div>
     </div>
 
-    <div class="flex gap-2 app-actions">
-        <button onclick="editApp(${index})" class="btn btn-secondary">
-            <i class="fas fa-edit"></i>
-        </button>
-        <button onclick="deleteApp(${index})" class="btn btn-danger">
-            <i class="fas fa-trash"></i>
-        </button>
+    <!-- SHA256 -->
+    <div class="sha-badge">
+        <div class="flex items-center justify-between mb-2">
+            <span class="font-semibold sha-label">SHA256 KEY</span>
+            <i class="fas fa-copy sha-copy"
+               onclick="copyToClipboard('${escapeHtml(app.sha256_key || '')}')"></i>
+        </div>
+
+        <code class="sha-code">
+            ${escapeHtml(app.sha256_key || 'No SHA256 key')}
+        </code>
     </div>
+
+    <!-- Blocklist -->
+    <div class="flex items-center justify-between mt-4 block-row">
+        <div class="flex items-center gap-2">
+            <i class="fas fa-ban block-icon
+                ${app.package_blocklist ? 'danger' : 'success'}"></i>
+            <span class="font-semibold">Blocklist:</span>
+        </div>
+
+        <span class="block-value
+            ${app.package_blocklist ? 'danger' : 'success'}">
+            ${app.package_blocklist ? escapeHtml(app.package_blocklist) : 'None'}
+        </span>
+    </div>
+
 </div>
+
                 `;
                 
                 container.appendChild(appCard);
