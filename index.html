@@ -417,6 +417,7 @@
             color: white;
             border: none;
             font-size: 24px;
+            padding: 8px 8px;
             cursor: pointer;
             box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4);
             transition: all 0.3s ease;
@@ -493,16 +494,22 @@
 
         /* Grid Layout */
         .grid-2 {
-            display: grid;
-            grid-template-columns: repeat(1, 1fr);
-            gap: 20px;
-        }
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
 
-        @media (min-width: 768px) {
-            .grid-2 {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
+/* Only desktop */
+@media (min-width: 1024px) {
+    .grid-2 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .block-full {
+        grid-column: span 2;
+    }
+}
+
 
         /* Apps Grid */
         .apps-grid {
@@ -895,21 +902,22 @@
                     </div>
                     
                     <div class="grid-2">
-                        <div class="input-group">
-                            <label class="input-label">ADMIN LABEL</label>
-                            <input type="text" id="config-label" class="input-field" placeholder="DARK UNKNOWN MODE">
-                        </div>
-                        
-                        <div class="input-group">
-                            <label class="input-label">CONTACT URL</label>
-                            <input type="url" id="config-url" class="input-field" placeholder="https://dumodz.com/contact">
-                        </div>
-                        
-                        <div class="input-group" style="grid-column: span 2;">
-                            <label class="input-label">GLOBAL BLOCKLIST</label>
-                            <textarea id="config-blocklist" class="input-field textarea-field" placeholder="Enter blocklist (one per line)"></textarea>
-                        </div>
-                    </div>
+    <div class="input-group">
+        <label class="input-label">ADMIN LABEL</label>
+        <input type="text" id="config-label" class="input-field" placeholder="DARK UNKNOWN MODE">
+    </div>
+
+    <div class="input-group">
+        <label class="input-label">CONTACT URL</label>
+        <input type="url" id="config-url" class="input-field" placeholder="https://dumodz.com/contact">
+    </div>
+
+    <div class="input-group block-full">
+        <label class="input-label">GLOBAL BLOCKLIST</label>
+        <textarea id="config-blocklist" class="input-field textarea-field" placeholder="Enter blocklist (one per line)"></textarea>
+    </div>
+</div>
+
                     
                     <button onclick="updateGlobalConfig()" class="btn btn-primary w-full mt-4">
                         <i class="fas fa-save mr-2"></i> Save Configuration
